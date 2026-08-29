@@ -1,0 +1,26 @@
+[
+  {
+    "id": "anim_icecream",
+    "title": "Ice Cream",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Icecream.html",
+    "preview": "🍦"
+  },
+  {
+    "id": "anim_jhula_2",
+    "title": "Jhula 2.0",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Jhula2.0.html",
+    "preview": "🎡"
+  },
+  {
+    "id": "anim_jhula_motion",
+    "title": "Jhula Motion",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Jhulamotion.html",
+    "preview": "🎢"
+  },
+  {
+    "id": "anim_linear_motion",
+    "title": "Linear Motion",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/linearmotion.html",
+    "preview": "📐"
+  }
+]

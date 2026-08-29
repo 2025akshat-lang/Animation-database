@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Interactive PPT Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="app-container">
+
+    <header class="editor-header">
+      <button id="undo-btn" class="icon-btn" title="Undo" type="button">↶</button>
+      <button id="redo-btn" class="icon-btn" title="Redo" type="button">↷</button>
+
+      <div class="editor-title">PPT Builder</div>
+
+      <select id="aspect-ratio-select" class="tool-dropdown" title="Aspect Ratio">
+        <option value="16-9">16:9</option>
+        <option value="4-3">4:3</option>
+        <option value="1-1">1:1</option>
+      </select>
+
+      <button id="download-ppt-btn" class="icon-btn" title="Download PPT/PDF" type="button">📥</button>
+      <button id="play-presentation-btn" class="icon-btn" title="Preview Slide" type="button">▶</button>
+      <button id="tools-menu-btn" class="icon-btn" title="Editor Tools" type="button">☰</button>
+    </header>
+
+    <div class="editor-main">
+
+      <aside class="slides-nav">
+        <h4>Slides</h4>
+        <div id="slides-list">
+          <div class="slide-thumb active">1</div>
+        </div>
+        <button id="add-slide-btn" type="button">+ New Slide</button>
+      </aside>
+
+      <main class="workspace">
+        <div id="slide-canvas" class="slide ratio-16-9">
+          <p class="placeholder">Tap + to add elements</p>
+        </div>
+      </main>
+
+    </div>
+
+    <div class="quick-actions">
+      <button class="quick-action" id="add-text-btn" type="button">
+        <span>＋</span>
+        <small>Text</small>
+      </button>
+
+      <button class="quick-action" id="add-shape-btn" type="button">
+        <span>◇</span>
+        <small>Shape</small>
+      </button>
+
+      <button class="quick-action" id="effects-menu-btn" type="button">
+        <span>✦</span>
+        <small>Effects</small>
+      </button>
+
+      <button class="quick-action" id="motion-menu-btn" type="button">
+        <span>◉</span>
+        <small>Motion</small>
+      </button>
+
+      <button class="quick-action" id="tools-menu-btn-bottom" type="button">
+        <span>☰</span>
+        <small>Tools</small>
+      </button>
+    </div>
+
+  </div> <div id="element-popover-menu" class="element-popover" style="display: none;">
+    <button id="pop-crop-btn" title="Crop Element">✂️ Crop</button>
+    <button id="pop-layer-up-btn" title="Bring Forward">🔼 Up</button>
+    <button id="pop-layer-down-btn" title="Send Backward">🔽 Down</button>
+    <button id="pop-delete-btn" class="pop-danger" title="Delete Element">🗑️ Delete</button>
+  </div>
+
+
+  <div id="menu-backdrop" class="menu-backdrop"></div>
+
+
+  <div id="tools-panel" class="tools-panel">
+
+    <div class="panel-handle"></div>
+
+    <div class="panel-header">
+      <h2>Editor Tools</h2>
+      <button id="close-tools-btn" class="close-panel" type="button">×</button>
+    </div>
+
+    <div class="tool-tabs">
+      <button class="tool-tab active" data-tab="add" type="button">Add</button>
+      <button class="tool-tab" data-tab="animation" type="button">Animate</button>
+      <button class="tool-tab" data-tab="effects" type="button">Effects</button>
+      <button class="tool-tab" data-tab="motion" type="button">Motion</button>
+      <button class="tool-tab" data-tab="settings" type="button">Settings</button>
+    </div>
+
+    <div class="tool-content active" id="tab-add">
+      <button id="open-shape-picker-btn" class="large-tool-btn" type="button">◇ Choose Shape</button>
+      <button id="add-html-anim-btn" class="large-tool-btn" type="button">🎬 Add HTML Animation</button>
+      
+      <label for="image-upload-input" class="large-tool-btn" style="display: flex; align-items: center; justify-content: center; cursor: pointer; margin-top: 8px;">
+        🖼️ Upload Local Image / GIF
+      </label>
+      <input type="file" id="image-upload-input" accept="image/*" style="display: none;">
+
+      <button id="clear-canvas-btn" class="large-tool-btn" type="button" style="margin-top: 12px; background: rgba(255,50,50,0.2);">🗑 Clear Slide</button>
+    </div>
+
+    <div class="tool-content" id="tab-animation">
+      <h3>Animation Library</h3>
+      <select id="anim-category">
+        <option value="all">All Animations</option>
+      </select>
+      <div id="animation-list" class="anim-grid"></div>
+    </div>
+
+    <div class="tool-content" id="tab-effects">
+      <h3>Visual Effects</h3>
+      <div class="effect-grid">
+        <button data-effect="effect-glow" type="button">✨ Glow</button>
+        <button data-effect="effect-shadow" type="button">🌑 Shadow</button>
+        <button data-effect="effect-glass" type="button">◇ Glass</button>
+        <button data-effect="effect-neon" type="button">⚡ Neon</button>
+        <button data-effect="effect-3d" type="button">◼ 3D</button>
+        <button data-effect="effect-remove" type="button">✕ Remove</button>
+      </div>
+    </div>
+
+    <div class="tool-content" id="tab-motion">
+      <h3>Motion Effects</h3>
+      <div class="effect-grid">
+        <button data-motion="motion-float" type="button">Float</button>
+        <button data-motion="motion-pulse" type="button">Pulse</button>
+        <button data-motion="motion-shake" type="button">Shake</button>
+        <button data-motion="motion-spin" type="button">Spin</button>
+        <button data-motion="motion-bounce" type="button">Bounce</button>
+        <button data-motion="motion-remove" type="button">Remove Motion</button>
+      </div>
+    </div>
+
+    <div class="tool-content" id="tab-settings">
+      <h3>Element Style</h3>
+
+      <div class="tool-group">
+        <label for="font-family-select">Font Style:</label>
+        <select id="font-family-select" class="tool-dropdown">
+          <option value="Arial, sans-serif">Standard (Arial)</option>
+          <option value="'Times New Roman', serif">Classic (Times New Roman)</option>
+          <option value="'Courier New', monospace">Code (Courier New)</option>
+          <option value="'Georgia', serif">Elegant (Georgia)</option>
+          <option value="'Trebuchet MS', sans-serif">Modern (Trebuchet)</option>
+          <option value="'Impact', sans-serif">Bold (Impact)</option>
+          <option value="'Comic Sans MS', cursive">Handwritten (Comic Sans)</option>
+        </select>
+      </div>
+
+      <div class="tool-group">
+        <label for="element-color-picker">Color Choice:</label>
+        <input type="color" id="element-color-picker" value="#6c5ce7" class="color-picker-input">
+        <div class="color-presets">
+          <button class="color-btn" style="background: #6c5ce7" data-color="#6c5ce7" type="button"></button>
+          <button class="color-btn" style="background: #ff7675" data-color="#ff7675" type="button"></button>
+          <button class="color-btn" style="background: #74b9ff" data-color="#74b9ff" type="button"></button>
+          <button class="color-btn" style="background: #55efc4" data-color="#55efc4" type="button"></button>
+          <button class="color-btn" style="background: #ffeaa7" data-color="#ffeaa7" type="button"></button>
+          <button class="color-btn" style="background: #2d3436" data-color="#2d3436" type="button"></button>
+        </div>
+      </div>
+
+      <hr style="border: 0.5px solid #333; margin: 15px 0;">
+
+      <h3>Animation Properties</h3>
+      <label>
+        Duration (s)
+        <input type="number" id="anim-duration" value="1" min="0" step="0.1">
+      </label>
+      <label>
+        Delay (s)
+        <input type="number" id="anim-delay" value="0" min="0" step="0.1">
+      </label>
+
+      <button id="delete-selected-btn" class="delete-btn" type="button">Delete Selected Element</button>
+    </div>
+
+  </div> <div id="embed-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h3>Paste HTML / 2D Animation Code</h3>
+      <textarea id="html-code-input" placeholder="<style>...</style><div>My 2D Animation</div><script>...</script>"></textarea>
+      <div class="modal-actions">
+        <button id="insert-html-btn" type="button">Insert to Slide</button>
+        <button id="close-modal-btn" type="button">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="crop-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h3>Crop Element</h3>
+      <div id="crop-container" style="position: relative; overflow: hidden; display: inline-block; max-width: 100%; max-height: 300px;">
+        <div id="crop-target-wrapper"></div>
+        <div id="crop-box" style="position: absolute; border: 2px dashed #00ff66; background: rgba(0,255,102,0.15); top: 10px; left: 10px; width: 100px; height: 100px; cursor: move;"></div>
+      </div>
+      <div class="modal-actions">
+        <button id="cancel-crop-btn" type="button">Cancel</button>
+        <button id="apply-crop-btn" type="button" style="background: #a78bfa; color: #fff;">Apply Crop</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="shape-modal" class="modal shape-modal" style="display: none;">
+    <div class="modal-content shape-picker-content">
+      <div class="shape-picker-header">
+        <h3>Choose a Shape</h3>
+        <button id="close-shape-modal-btn" type="button">×</button>
+      </div>
+
+      <h4>Basic Shapes</h4>
+      <div class="shape-grid">
+        <button class="shape-option" data-shape="square" type="button"><span class="shape-preview square"></span><span>Square</span></button>
+        <button class="shape-option" data-shape="rectangle" type="button"><span class="shape-preview rectangle"></span><span>Rectangle</span></button>
+        <button class="shape-option" data-shape="rounded" type="button"><span class="shape-preview rounded"></span><span>Rounded</span></button>
+        <button class="shape-option" data-shape="circle" type="button"><span class="shape-preview circle"></span><span>Circle</span></button>
+        <button class="shape-option" data-shape="oval" type="button"><span class="shape-preview oval"></span><span>Oval</span></button>
+        <button class="shape-option" data-shape="diamond" type="button"><span class="shape-preview diamond"></span><span>Diamond</span></button>
+      </div>
+
+      <h4>Triangles & Polygons</h4>
+      <div class="shape-grid">
+        <button class="shape-option" data-shape="triangle" type="button"><span class="shape-preview triangle"></span><span>Up</span></button>
+        <button class="shape-option" data-shape="pentagon" type="button"><span class="shape-preview pentagon"></span><span>Pentagon</span></button>
+        <button class="shape-option" data-shape="hexagon" type="button"><span class="shape-preview hexagon"></span><span>Hexagon</span></button>
+      </div>
+
+      <h4>Stars & Symbols</h4>
+      <div class="shape-grid">
+        <button class="shape-option" data-shape="star" type="button"><span class="shape-preview symbol">★</span><span>Star</span></button>
+        <button class="shape-option" data-shape="heart" type="button"><span class="shape-preview symbol">♥</span><span>Heart</span></button>
+        <button class="shape-option" data-shape="cloud" type="button"><span class="shape-preview symbol">☁</span><span>Cloud</span></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

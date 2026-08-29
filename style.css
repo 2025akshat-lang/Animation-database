@@ -1,0 +1,1528 @@
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+
+body { 
+  background: #121212; 
+  color: #fff; 
+  overflow-x: hidden;
+}
+
+/* Main Container Layout */
+.app-container { 
+  display: flex; 
+  flex-direction: column; /* Stacks nicely on mobile devices */
+  min-height: 100vh; 
+}
+
+/* Desktop View Layout */
+@media (min-width: 768px) {
+  .app-container {
+    flex-direction: row;
+    height: 100vh;
+  }
+}
+
+/* 1. Left Sidebar: Slides Navigation */
+.slides-nav { 
+  width: 100%; 
+  background: #181818; 
+  padding: 15px; 
+  border-bottom: 1px solid #333; 
+  display: flex; 
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+@media (min-width: 768px) {
+  .slides-nav {
+    width: 15%;
+    flex-direction: column;
+    border-bottom: none;
+    border-right: 1px solid #333;
+    overflow-x: visible;
+  }
+}
+
+.slide-thumb { 
+  min-width: 50px; 
+  height: 50px; 
+  background: #fff; 
+  color: #000; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  cursor: pointer; 
+  border: 2px solid transparent; 
+  border-radius: 6px; 
+  font-weight: bold; 
+}
+
+.slide-thumb.active { 
+  border-color: #bb86fc; 
+  box-shadow: 0 0 8px rgba(187, 134, 252, 0.5);
+}
+
+/* 2. Middle Sidebar: Elements & Properties */
+.sidebar { 
+  width: 100%; 
+  background: #1e1e1e; 
+  padding: 15px; 
+  border-bottom: 1px solid #333; 
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    width: 25%;
+    border-bottom: none;
+    border-right: 1px solid #333;
+    overflow-y: auto;
+  }
+}
+
+.sidebar h3 {
+  font-size: 1rem;
+  color: #bb86fc;
+  margin-top: 5px;
+}
+
+.tools-group, .filter-box, .properties-panel {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.properties-panel label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+  gap: 4px;
+}
+
+.properties-panel input, select {
+  background: #2d2d2d;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+
+/* Buttons */
+button {
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #444;
+}
+
+/* Cards & Grid */
+.anim-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.anim-card { 
+  background: #2a2a2a; 
+  padding: 10px; 
+  border-radius: 6px; 
+  cursor: pointer; 
+  text-align: center; 
+  border: 1px solid #3d3d3d;
+}
+
+.anim-card:active { 
+  transform: scale(0.97); 
+}
+
+/* 3. Workspace & Canvas Area */
+.workspace { 
+  flex: 1; 
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  /* Purane 'justify-content: center;' ko hata kar 'flex-start' kar diya hai */
+  justify-content: flex-start; 
+  background: #121212; 
+  padding: 15px 20px 100px 20px; /* Neeche extra space di taaki quick-actions bar slide ko hide na kare */
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.slide { 
+  width: 100%; 
+  max-width: 700px;
+  /* Mobile screens par extra vertical height ke liye */
+  height: 480px; 
+  background: #ffffff; 
+  color: #000; 
+  position: relative; 
+  border-radius: 12px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  overflow: hidden; 
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  margin-top: 10px; /* Slides header se thoda clean gap */
+}
+
+  .slide {
+    height: 560px;width:a;
+  }
+.placeholder {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  padding: 10px;
+}
+
+/* Interactive Canvas Dynamic Elements */
+.canvas-element { 
+  position: absolute; 
+  min-width: 50px; 
+  min-height: 30px; 
+  cursor: move; 
+  touch-action: none;
+}
+
+.canvas-element.selected { 
+  outline: 2px dashed #6200ee; 
+}
+
+.text-element { 
+  color: #000; 
+  font-size: 18px; 
+  padding: 5px; 
+  outline: none; 
+}
+
+.shape-element { 
+  width: 80px; 
+  height: 80px; 
+  background: #03dac6; 
+  border-radius: 4px; 
+}
+
+.anim-box { 
+  padding: 15px 25px; 
+  background: #6200ee; 
+  color: white; 
+  border-radius: 6px; 
+  font-weight: bold; 
+}
+
+/* Keyframe Animations */
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(98,0,238, 0.7); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(98,0,238, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(98,0,238, 0); }
+}
+.anim-pulse { animation: pulse 2s infinite; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+.anim-bounce { animation: bounce 1s infinite; }
+/* Modal Styling */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-content textarea {
+  width: 100%;
+  height: 150px;
+  background: #121212;
+  color: #00ff66;
+  border: 1px solid #444;
+  padding: 10px;
+  font-family: monospace;
+  border-radius: 4px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Embedded Animation Container */
+.html-anim-element {
+  width: 200px;
+  height: 180px;
+  border: 1px dashed #bb86fc;
+  background: transparent;
+  overflow: hidden;
+}
+
+.html-anim-element iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none; /* Allows dragging without iframe trapping touch/mouse events */
+}
+.html-anim-element {
+  position: absolute;
+  width: 400px;
+  height: 250px;
+  min-width: 150px;
+  min-height: 100px;
+
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+.html-anim-element.selected {
+  border-color: #b28cff;
+}
+
+.html-anim-element iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  pointer-events: none;
+}
+
+.resize-handle {
+  position: absolute;
+
+  right: -8px;
+  bottom: -8px;
+
+  width: 22px;
+  height: 22px;
+
+  background: #a855f7;
+  border: 3px solid white;
+  border-radius: 50%;
+
+  cursor: nwse-resize;
+  z-index: 2000;
+
+  display: none;
+}
+
+.html-anim-element.selected .resize-handle {
+  display: block;
+}
+/* =================================
+   MOBILE EDITOR REDESIGN
+================================= */
+
+:root {
+  --bg: #16171b;
+  --panel: #202126;
+  --card: #2b2d33;
+  --purple: #a78bfa;
+  --purple-dark: #7c3aed;
+  --border: rgba(255,255,255,.10);
+}
+
+
+/* HEADER */
+
+.editor-header {
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0 12px;
+
+  background: rgba(22, 23, 27, .94);
+
+  border-bottom: 1px solid var(--border);
+
+  position: sticky;
+  top: 0;
+
+  z-index: 100;
+}
+
+
+.editor-title {
+  flex: 1;
+
+  text-align: center;
+
+  color: white;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  background: #292b31;
+
+  color: white;
+
+  font-size: 22px;
+}
+
+
+/* MAIN */
+
+.app-container {
+  padding-bottom: 90px;
+}
+
+
+/* BOTTOM ACTION BAR */
+
+.quick-actions {
+  position: fixed;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 76px;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  background: rgba(24, 25, 29, .96);
+
+  backdrop-filter: blur(20px);
+
+  border-top: 1px solid var(--border);
+
+  z-index: 1000;
+
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+
+.quick-action {
+  min-width: 58px;
+
+  border: none;
+
+  background: transparent;
+
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 4px;
+}
+
+
+.quick-action span {
+  font-size: 24px;
+}
+
+
+.quick-action small {
+  font-size: 11px;
+
+  color: #b9bac3;
+}
+
+
+/* SELECTED ELEMENT */
+
+.canvas-element.selected {
+  outline: 2px solid var(--purple);
+
+  box-shadow:
+    0 0 0 4px rgba(167,139,250,.15),
+    0 0 25px rgba(167,139,250,.25);
+}
+
+
+/* BACKDROP */
+
+.menu-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0,0,0,.55);
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transition: .25s;
+
+  z-index: 1500;
+}
+
+
+.menu-backdrop.active {
+  opacity: 1;
+
+  visibility: visible;
+}
+
+
+/* BOTTOM SHEET */
+
+.tools-panel {
+  position: fixed;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: min(78vh, 720px);
+
+  background:
+    linear-gradient(
+      180deg,
+      #28282f,
+      #1b1c21
+    );
+
+  border-radius: 26px 26px 0 0;
+
+  transform: translateY(105%);
+
+  transition:
+    transform .35s cubic-bezier(.2,.8,.2,1);
+
+  z-index: 2000;
+
+  padding: 12px 18px 30px;
+
+  overflow-y: auto;
+}
+
+
+.tools-panel.active {
+  transform: translateY(0);
+}
+
+
+.panel-handle {
+  width: 48px;
+  height: 5px;
+
+  border-radius: 10px;
+
+  background: #666873;
+
+  margin: 0 auto 16px;
+}
+
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 16px;
+}
+
+
+.panel-header h2 {
+  margin: 0;
+
+  color: white;
+}
+
+
+.close-panel {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  border: none;
+
+  background: #35363d;
+
+  color: white;
+
+  font-size: 25px;
+}
+
+
+/* TOOL TABS */
+
+.tool-tabs {
+  display: flex;
+
+  gap: 8px;
+
+  overflow-x: auto;
+
+  padding-bottom: 12px;
+}
+
+
+.tool-tab {
+  white-space: nowrap;
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+
+  padding: 10px 16px;
+
+  background: #303139;
+
+  color: #bcbec8;
+}
+
+
+.tool-tab.active {
+  color: white;
+
+  background: var(--purple-dark);
+
+  border-color: var(--purple);
+}
+
+
+/* CONTENT */
+
+.tool-content {
+  display: none;
+
+  padding-top: 10px;
+}
+
+
+.tool-content.active {
+  display: block;
+}
+
+
+.large-tool-btn {
+  width: 100%;
+
+  min-height: 58px;
+
+  margin-bottom: 10px;
+
+  border-radius: 16px;
+
+  border: 1px solid var(--border);
+
+  background: #303139;
+
+  color: white;
+
+  font-size: 16px;
+}
+
+
+/* EFFECTS */
+
+.effect-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 10px;
+}
+
+
+.effect-grid button {
+  min-height: 56px;
+
+  border-radius: 14px;
+
+  border: 1px solid var(--border);
+
+  background: #303139;
+
+  color: white;
+
+  font-size: 15px;
+}
+
+
+.effect-grid button:active,
+.quick-action:active,
+.large-tool-btn:active {
+  transform: scale(.96);
+}
+
+
+/* PROPERTIES */
+
+.tool-content label {
+  display: block;
+
+  margin: 15px 0;
+
+  color: white;
+}
+
+
+.tool-content input {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  margin-top: 8px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--border);
+
+  background: #303139;
+
+  color: white;
+}
+
+
+.delete-btn {
+  width: 100%;
+
+  padding: 15px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #9f2222;
+
+  color: white;
+
+  margin-top: 20px;
+}
+/* Glow */
+
+.effect-glow {
+  box-shadow:
+    0 0 12px #a78bfa,
+    0 0 35px rgba(167,139,250,.7);
+}
+
+
+/* Shadow */
+
+.effect-shadow {
+  box-shadow:
+    12px 14px 25px rgba(0,0,0,.55);
+}
+
+
+/* Glass */
+
+.effect-glass {
+  background:
+    rgba(255,255,255,.10);
+
+  backdrop-filter:
+    blur(12px);
+
+  border:
+    1px solid rgba(255,255,255,.25);
+}
+
+
+/* Neon */
+
+.effect-neon {
+  filter:
+    drop-shadow(0 0 7px #a78bfa)
+    drop-shadow(0 0 15px #7c3aed);
+}
+
+
+/* 3D */
+
+.effect-3d {
+  transform:
+    perspective(500px)
+    rotateX(7deg)
+    rotateY(-7deg);
+
+  box-shadow:
+    8px 10px 0 rgba(0,0,0,.35);
+}
+.motion-float {
+  animation: float 2.5s ease-in-out infinite;
+}
+
+
+.motion-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+
+.motion-shake {
+  animation: shake .6s ease-in-out infinite;
+}
+
+
+.motion-spin {
+  animation: spin 2.5s linear infinite;
+}
+
+
+.motion-bounce {
+  animation: bounce 1s ease infinite;
+}
+
+
+@keyframes float {
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+
+@keyframes pulse {
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+
+@keyframes shake {
+  25% {
+    transform: translateX(-7px);
+  }
+
+  75% {
+    transform: translateX(7px);
+  }
+}
+
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+@keyframes bounce {
+  50% {
+    transform: translateY(-20px);
+  }
+}
+/* =====================================================
+   SHAPE MODAL
+===================================================== */
+
+.shape-modal {
+
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+.shape-picker-content {
+
+  width: min(95vw, 800px);
+  max-height: 85vh;
+
+  overflow-y: auto;
+
+}
+
+
+.shape-picker-header {
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+
+.shape-picker-header button {
+
+  border: none;
+  background: transparent;
+
+  color: white;
+
+  font-size: 32px;
+
+  cursor: pointer;
+
+}
+
+
+.shape-picker-content h4 {
+
+  margin-top: 28px;
+  margin-bottom: 12px;
+
+  color: #c4a4ff;
+
+}
+
+
+/* =====================================================
+   SHAPE GRID
+===================================================== */
+
+.shape-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(110px, 1fr));
+
+  gap: 12px;
+
+}
+
+
+.shape-option {
+
+  min-height: 105px;
+
+  padding: 12px;
+
+  border: 1px solid rgba(255,255,255,0.15);
+
+  border-radius: 14px;
+
+  background: #292929;
+
+  color: white;
+
+  cursor: pointer;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+}
+
+
+.shape-option:active {
+
+  transform: scale(0.96);
+
+}
+
+
+.shape-preview {
+
+  display: block;
+
+  width: 45px;
+
+  height: 45px;
+
+  background: #a78bfa;
+
+}
+
+
+/* =====================================================
+   BASIC SHAPES
+===================================================== */
+
+.shape-preview.square {
+
+  width: 45px;
+  height: 45px;
+
+}
+
+
+.shape-preview.rectangle {
+
+  width: 60px;
+  height: 35px;
+
+}
+
+
+.shape-preview.rounded {
+
+  border-radius: 12px;
+
+}
+
+
+.shape-preview.circle {
+
+  border-radius: 50%;
+
+}
+
+
+.shape-preview.oval {
+
+  width: 65px;
+  height: 40px;
+
+  border-radius: 50%;
+
+}
+
+
+.shape-preview.diamond {
+
+  transform: rotate(45deg);
+
+}
+
+
+.shape-preview.parallelogram {
+
+  transform: skewX(-20deg);
+
+}
+
+
+.shape-preview.trapezoid {
+
+  width: 60px;
+
+  clip-path:
+    polygon(
+      20% 0%,
+      80% 0%,
+      100% 100%,
+      0% 100%
+    );
+
+}
+
+
+/* =====================================================
+   TRIANGLES
+===================================================== */
+
+.shape-preview.triangle {
+
+  clip-path:
+    polygon(
+      50% 0%,
+      100% 100%,
+      0% 100%
+    );
+
+}
+
+
+.shape-preview.triangle-down {
+
+  clip-path:
+    polygon(
+      0% 0%,
+      100% 0%,
+      50% 100%
+    );
+
+}
+
+
+.shape-preview.triangle-left {
+
+  clip-path:
+    polygon(
+      0% 50%,
+      100% 0%,
+      100% 100%
+    );
+
+}
+
+
+.shape-preview.triangle-right {
+
+  clip-path:
+    polygon(
+      0% 0%,
+      100% 50%,
+      0% 100%
+    );
+
+}
+
+
+/* =====================================================
+   POLYGONS
+===================================================== */
+
+.shape-preview.pentagon {
+
+  clip-path:
+    polygon(
+      50% 0%,
+      100% 38%,
+      82% 100%,
+      18% 100%,
+      0% 38%
+    );
+
+}
+
+
+.shape-preview.hexagon {
+
+  clip-path:
+    polygon(
+      25% 0%,
+      75% 0%,
+      100% 50%,
+      75% 100%,
+      25% 100%,
+      0% 50%
+    );
+
+}
+
+
+.shape-preview.octagon {
+
+  clip-path:
+    polygon(
+      30% 0%,
+      70% 0%,
+      100% 30%,
+      100% 70%,
+      70% 100%,
+      30% 100%,
+      0% 70%,
+      0% 30%
+    );
+
+}
+
+
+.shape-preview.cross {
+
+  clip-path:
+    polygon(
+      35% 0%,
+      65% 0%,
+      65% 35%,
+      100% 35%,
+      100% 65%,
+      65% 65%,
+      65% 100%,
+      35% 100%,
+      35% 65%,
+      0% 65%,
+      0% 35%,
+      35% 35%
+    );
+
+}
+
+
+/* =====================================================
+   SYMBOL PREVIEWS
+===================================================== */
+
+.shape-preview.star,
+.shape-preview.star4,
+.shape-preview.heart,
+.shape-preview.cloud,
+.shape-preview.sun,
+.shape-preview.symbol,
+.shape-preview.speech,
+.shape-preview.thought {
+
+  background: transparent;
+
+  width: auto;
+  height: auto;
+
+  font-size: 42px;
+
+  line-height: 1;
+
+  color: #a78bfa;
+
+}
+
+
+/* =====================================================
+   ACTUAL SLIDE SHAPES
+===================================================== */
+
+.shape-element {
+
+  width: 130px;
+  height: 100px;
+
+  background: #8b5cf6;
+
+  position: absolute;
+
+  cursor: move;
+
+}
+
+
+/* Rounded */
+
+.shape-rounded {
+
+  border-radius: 22px;
+
+}
+
+
+/* Circle */
+
+.shape-circle {
+
+  width: 120px;
+  height: 120px;
+
+  border-radius: 50%;
+
+}
+
+
+/* Oval */
+
+.shape-oval {
+
+  width: 170px;
+  height: 100px;
+
+  border-radius: 50%;
+
+}
+
+
+/* Diamond */
+
+.shape-diamond {
+
+  width: 110px;
+  height: 110px;
+
+  transform: rotate(45deg);
+
+}
+
+
+/* Parallelogram */
+
+.shape-parallelogram {
+
+  transform: skewX(-20deg);
+
+}
+
+
+/* Trapezoid */
+
+.shape-trapezoid {
+
+  clip-path:
+    polygon(
+      20% 0%,
+      80% 0%,
+      100% 100%,
+      0% 100%
+    );
+
+}
+
+
+/* Triangles */
+
+.shape-triangle {
+
+  clip-path:
+    polygon(
+      50% 0%,
+      100% 100%,
+      0% 100%
+    );
+
+}
+
+
+.shape-triangle-down {
+
+  clip-path:
+    polygon(
+      0% 0%,
+      100% 0%,
+      50% 100%
+    );
+
+}
+
+
+.shape-triangle-left {
+
+  clip-path:
+    polygon(
+      0% 50%,
+      100% 0%,
+      100% 100%
+    );
+
+}
+
+
+.shape-triangle-right {
+
+  clip-path:
+    polygon(
+      0% 0%,
+      100% 50%,
+      0% 100%
+    );
+
+}
+
+
+/* Pentagon */
+
+.shape-pentagon {
+
+  clip-path:
+    polygon(
+      50% 0%,
+      100% 38%,
+      82% 100%,
+      18% 100%,
+      0% 38%
+    );
+
+}
+
+
+/* Hexagon */
+
+.shape-hexagon {
+
+  clip-path:
+    polygon(
+      25% 0%,
+      75% 0%,
+      100% 50%,
+      75% 100%,
+      25% 100%,
+      0% 50%
+    );
+
+}
+
+
+/* Octagon */
+
+.shape-octagon {
+
+  clip-path:
+    polygon(
+      30% 0%,
+      70% 0%,
+      100% 30%,
+      100% 70%,
+      70% 100%,
+      30% 100%,
+      0% 70%,
+      0% 30%
+    );
+
+}
+
+
+/* Cross */
+
+.shape-cross {
+
+  clip-path:
+    polygon(
+      35% 0%,
+      65% 0%,
+      65% 35%,
+      100% 35%,
+      100% 65%,
+      65% 65%,
+      65% 100%,
+      35% 100%,
+      35% 65%,
+      0% 65%,
+      0% 35%,
+      35% 35%
+    );
+
+}
+
+
+/* =====================================================
+   SYMBOL SHAPES ON SLIDE
+===================================================== */
+
+.symbol-shape {
+
+  background: transparent;
+
+  color: #8b5cf6;
+
+  width: auto;
+  height: auto;
+
+  min-width: 80px;
+  min-height: 80px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 100px;
+
+  line-height: 1;
+
+}
+.shape-element {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.symbol-shape {
+  font-size: clamp(20px, 8vw, 120px);
+  user-select: none;
+}
+
+.resize-handle {
+  width: 12px;
+  height: 12px;
+  background-color: #007bff;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: se-resize;
+  z-index: 10;
+}
+/* Shape element container */
+.canvas-element {
+  position: absolute !important;
+  box-sizing: border-box !important;
+  /* overflow: hidden BILKUL MAT RAKHNA, nahi toh dot kat jayega */
+  overflow: visible !important; 
+}
+
+/* Shape selection highlight */
+.canvas-element.selected {
+  outline: 2px dashed #6c5ce7;
+  outline-offset: 2px;
+}
+
+/* Resize Handle (Bottom-Right Blue Dot) */
+.resize-handle {
+  width: 16px !important;
+  height: 16px !important;
+  background-color: #007bff !important; /* Visible Blue Color */
+  border: 2px solid #ffffff !important;
+  border-radius: 50% !important;
+  position: absolute !important;
+  bottom: -8px !important;
+  right: -8px !important;
+  cursor: se-resize !important;
+  z-index: 9999 !important; /* Sabse upar dikhne ke liye */
+  display: block !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Jab shape select na ho toh handle hide rakho (optional) */
+.canvas-element:not(.selected) .resize-handle {
+  display: none !important;
+}
+.tool-group {
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tool-dropdown {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #222;
+  color: #fff;
+  font-size: 14px;
+}
+
+.color-picker-input {
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+}
+
+.color-presets {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.color-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
