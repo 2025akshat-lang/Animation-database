@@ -6,6 +6,688 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Interactive PPT Builder</title>
   <link rel="stylesheet" href="style.css">
+  <style>* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+
+:root {
+  --bg: #16171b;
+  --panel: #202126;
+  --card: #2b2d33;
+  --purple: #a78bfa;
+  --purple-dark: #7c3aed;
+  --border: rgba(255,255,255,.10);
+}
+
+body { 
+  background: #121212; 
+  color: #fff; 
+  overflow-x: hidden;
+}
+
+/* Main Container Layout */
+.app-container { 
+  display: flex; 
+  flex-direction: column; 
+  min-height: 100vh; 
+  padding-bottom: 90px;
+}
+
+/* Desktop View Layout */
+@media (min-width: 768px) {
+  .app-container {
+    flex-direction: row;
+    height: 100vh;
+    padding-bottom: 0;
+  }
+}
+
+/* HEADER */
+.editor-header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  background: rgba(22, 23, 27, .94);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.editor-title {
+  flex: 1;
+  text-align: center;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #292b31;
+  color: white;
+  font-size: 22px;
+}
+
+/* 1. Left Sidebar: Slides Navigation */
+.slides-nav { 
+  width: 100%; 
+  background: #181818; 
+  padding: 15px; 
+  border-bottom: 1px solid #333; 
+  display: flex; 
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+@media (min-width: 768px) {
+  .slides-nav {
+    width: 15%;
+    flex-direction: column;
+    border-bottom: none;
+    border-right: 1px solid #333;
+    overflow-x: visible;
+  }
+}
+
+.slide-thumb { 
+  min-width: 50px; 
+  height: 50px; 
+  background: #fff; 
+  color: #000; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  cursor: pointer; 
+  border: 2px solid transparent; 
+  border-radius: 6px; 
+  font-weight: bold; 
+}
+
+.slide-thumb.active { 
+  border-color: #bb86fc; 
+  box-shadow: 0 0 8px rgba(187, 134, 252, 0.5);
+}
+
+/* 2. Middle Sidebar: Elements & Properties */
+.sidebar { 
+  width: 100%; 
+  background: #1e1e1e; 
+  padding: 15px; 
+  border-bottom: 1px solid #333; 
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    width: 25%;
+    border-bottom: none;
+    border-right: 1px solid #333;
+    overflow-y: auto;
+  }
+}
+
+.sidebar h3 {
+  font-size: 1rem;
+  color: #bb86fc;
+  margin-top: 5px;
+}
+
+.tools-group, .filter-box, .properties-panel {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.properties-panel label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+  gap: 4px;
+}
+
+.properties-panel input, select {
+  background: #2d2d2d;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+
+/* Buttons */
+button {
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #444;
+}
+
+/* Cards & Grid */
+.anim-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.anim-card { 
+  background: #2a2a2a; 
+  padding: 10px; 
+  border-radius: 6px; 
+  cursor: pointer; 
+  text-align: center; 
+  border: 1px solid #3d3d3d;
+}
+
+.anim-card:active { 
+  transform: scale(0.97); 
+}
+
+/* 3. Workspace & Canvas Area */
+.workspace { 
+  flex: 1; 
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  justify-content: flex-start; 
+  background: #121212; 
+  padding: 15px 20px 100px 20px; 
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.slide { 
+  width: 100%; 
+  max-width: 700px;
+  height: 480px; 
+  background: #ffffff; 
+  color: #000; 
+  position: relative; 
+  border-radius: 12px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  overflow: hidden; 
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  margin-top: 10px; 
+}
+
+@media (min-width: 768px) {
+  .slide {
+    height: 560px;
+  }
+}
+
+.placeholder {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  padding: 10px;
+}
+
+/* Dynamic Canvas Elements */
+.canvas-element { 
+  position: absolute !important; 
+  min-width: 50px; 
+  min-height: 30px; 
+  cursor: move; 
+  touch-action: none;
+  box-sizing: border-box !important;
+  overflow: visible !important; 
+}
+
+.canvas-element.selected { 
+  outline: 2px dashed #6c5ce7 !important; 
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(167,139,250,.15), 0 0 25px rgba(167,139,250,.25);
+}
+
+.text-element { 
+  color: #000; 
+  font-size: 18px; 
+  padding: 5px; 
+  outline: none; 
+}
+
+.anim-box { 
+  padding: 15px 25px; 
+  background: #6200ee; 
+  color: white; 
+  border-radius: 6px; 
+  font-weight: bold; 
+}
+
+/* Resize Handle */
+.resize-handle {
+  width: 16px !important;
+  height: 16px !important;
+  background-color: #007bff !important; 
+  border: 2px solid #ffffff !important;
+  border-radius: 50% !important;
+  position: absolute !important;
+  bottom: -8px !important;
+  right: -8px !important;
+  cursor: se-resize !important;
+  z-index: 9999 !important; 
+  display: block !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.canvas-element:not(.selected) .resize-handle {
+  display: none !important;
+}
+
+/* Embedded Animation Container */
+.html-anim-element {
+  position: absolute;
+  width: 400px;
+  height: 250px;
+  min-width: 150px;
+  min-height: 100px;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+.html-anim-element.selected {
+  border-color: #b28cff;
+}
+
+.html-anim-element iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  pointer-events: none; 
+}
+
+/* Keyframe Animations */
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(98,0,238, 0.7); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(98,0,238, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(98,0,238, 0); }
+}
+.anim-pulse { animation: pulse 2s infinite; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+.anim-bounce { animation: bounce 1s infinite; }
+
+/* Modals */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-content textarea {
+  width: 100%;
+  height: 150px;
+  background: #121212;
+  color: #00ff66;
+  border: 1px solid #444;
+  padding: 10px;
+  font-family: monospace;
+  border-radius: 4px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* BOTTOM ACTION BAR */
+.quick-actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 76px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(24, 25, 29, .96);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  z-index: 1000;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.quick-action {
+  min-width: 58px;
+  border: none;
+  background: transparent;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.quick-action span { font-size: 24px; }
+.quick-action small { font-size: 11px; color: #b9bac3; }
+
+/* BACKDROP & TOOLS PANEL */
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  opacity: 0;
+  visibility: hidden;
+  transition: .25s;
+  z-index: 1500;
+}
+
+.menu-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tools-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: min(78vh, 720px);
+  background: linear-gradient(180deg, #28282f, #1b1c21);
+  border-radius: 26px 26px 0 0;
+  transform: translateY(105%);
+  transition: transform .35s cubic-bezier(.2,.8,.2,1);
+  z-index: 2000;
+  padding: 12px 18px 30px;
+  overflow-y: auto;
+}
+
+.tools-panel.active {
+  transform: translateY(0);
+}
+
+.panel-handle {
+  width: 48px;
+  height: 5px;
+  border-radius: 10px;
+  background: #666873;
+  margin: 0 auto 16px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.panel-header h2 { margin: 0; color: white; }
+
+.close-panel {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #35363d;
+  color: white;
+  font-size: 25px;
+}
+
+/* TOOL TABS */
+.tool-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+}
+
+.tool-tab {
+  white-space: nowrap;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 16px;
+  background: #303139;
+  color: #bcbec8;
+}
+
+.tool-tab.active {
+  color: white;
+  background: var(--purple-dark);
+  border-color: var(--purple);
+}
+
+.tool-content { display: none; padding-top: 10px; }
+.tool-content.active { display: block; }
+
+.large-tool-btn {
+  width: 100%;
+  min-height: 58px;
+  margin-bottom: 10px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: #303139;
+  color: white;
+  font-size: 16px;
+}
+
+/* EFFECTS */
+.effect-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.effect-grid button {
+  min-height: 56px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: #303139;
+  color: white;
+  font-size: 15px;
+}
+
+.effect-grid button:active,
+.quick-action:active,
+.large-tool-btn:active {
+  transform: scale(.96);
+}
+
+.tool-content label { display: block; margin: 15px 0; color: white; }
+.tool-content input {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 8px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #303139;
+  color: white;
+}
+
+.delete-btn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 14px;
+  background: #9f2222;
+  color: white;
+  margin-top: 20px;
+}
+
+/* Visual Effects Classes */
+.effect-glow { box-shadow: 0 0 12px #a78bfa, 0 0 35px rgba(167,139,250,.7); }
+.effect-shadow { box-shadow: 12px 14px 25px rgba(0,0,0,.55); }
+.effect-glass { background: rgba(255,255,255,.10); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.25); }
+.effect-neon { filter: drop-shadow(0 0 7px #a78bfa) drop-shadow(0 0 15px #7c3aed); }
+.effect-3d { transform: perspective(500px) rotateX(7deg) rotateY(-7deg); box-shadow: 8px 10px 0 rgba(0,0,0,.35); }
+
+/* Motion Effects */
+.motion-float { animation: float 2.5s ease-in-out infinite; }
+.motion-pulse { animation: pulse 1.5s ease-in-out infinite; }
+.motion-shake { animation: shake .6s ease-in-out infinite; }
+.motion-spin { animation: spin 2.5s linear infinite; }
+.motion-bounce { animation: bounce 1s ease infinite; }
+
+@keyframes float { 50% { transform: translateY(-14px); } }
+@keyframes shake { 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* SHAPE MODAL & SHAPES */
+.shape-modal { align-items: center; justify-content: center; }
+.shape-picker-content { width: min(95vw, 800px); max-height: 85vh; overflow-y: auto; }
+.shape-picker-header { display: flex; align-items: center; justify-content: space-between; }
+.shape-picker-header button { border: none; background: transparent; color: white; font-size: 32px; cursor: pointer; }
+.shape-picker-content h4 { margin-top: 28px; margin-bottom: 12px; color: #c4a4ff; }
+
+.shape-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+.shape-option { min-height: 105px; padding: 12px; border: 1px solid rgba(255,255,255,0.15); border-radius: 14px; background: #292929; color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+.shape-option:active { transform: scale(0.96); }
+
+.shape-preview { display: block; width: 45px; height: 45px; background: #a78bfa; }
+.shape-preview.square { width: 45px; height: 45px; }
+.shape-preview.rectangle { width: 60px; height: 35px; }
+.shape-preview.rounded { border-radius: 12px; }
+.shape-preview.circle { border-radius: 50%; }
+.shape-preview.oval { width: 65px; height: 40px; border-radius: 50%; }
+.shape-preview.diamond { transform: rotate(45deg); }
+.shape-preview.parallelogram { transform: skewX(-20deg); }
+.shape-preview.trapezoid { width: 60px; clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%); }
+.shape-preview.triangle { clip-path: polygon(50% 0%, 100% 100%, 0% 100%); }
+.shape-preview.triangle-down { clip-path: polygon(0% 0%, 100% 0%, 50% 100%); }
+.shape-preview.triangle-left { clip-path: polygon(0% 50%, 100% 0%, 100% 100%); }
+.shape-preview.triangle-right { clip-path: polygon(0% 0%, 100% 50%, 0% 100%); }
+.shape-preview.pentagon { clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); }
+.shape-preview.hexagon { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
+.shape-preview.octagon { clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+.shape-preview.cross { clip-path: polygon(35% 0%, 65% 0%, 65% 35%, 100% 35%, 100% 65%, 65% 65%, 65% 100%, 35% 100%, 35% 65%, 0% 65%, 0% 35%, 35% 35%); }
+
+.shape-preview.symbol { background: transparent; width: auto; height: auto; font-size: 42px; line-height: 1; color: #a78bfa; }
+
+/* Slide Shapes */
+.shape-element { width: 130px; height: 100px; background: #8b5cf6; position: absolute; cursor: move; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+.shape-rounded { border-radius: 22px; }
+.shape-circle { width: 120px; height: 120px; border-radius: 50%; }
+.shape-oval { width: 170px; height: 100px; border-radius: 50%; }
+.shape-diamond { width: 110px; height: 110px; transform: rotate(45deg); }
+.shape-parallelogram { transform: skewX(-20deg); }
+.shape-trapezoid { clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%); }
+.shape-triangle { clip-path: polygon(50% 0%, 100% 100%, 0% 100%); }
+.shape-triangle-down { clip-path: polygon(0% 0%, 100% 0%, 50% 100%); }
+.shape-triangle-left { clip-path: polygon(0% 50%, 100% 0%, 100% 100%); }
+.shape-triangle-right { clip-path: polygon(0% 0%, 100% 50%, 0% 100%); }
+.shape-pentagon { clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); }
+.shape-hexagon { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
+.shape-octagon { clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+.shape-cross { clip-path: polygon(35% 0%, 65% 0%, 65% 35%, 100% 35%, 100% 65%, 65% 65%, 65% 100%, 35% 100%, 35% 65%, 0% 65%, 0% 35%, 35% 35%); }
+
+.symbol-shape { background: transparent; color: #8b5cf6; width: auto; height: auto; min-width: 80px; min-height: 80px; display: flex; align-items: center; justify-content: center; font-size: clamp(20px, 8vw, 120px); user-select: none; line-height: 1; }
+
+/* Control Tools */
+.tool-group { margin: 12px 0; display: flex; flex-direction: column; gap: 6px; }
+.tool-dropdown { padding: 8px 12px; border-radius: 8px; border: 1px solid #444; background: #222; color: #fff; font-size: 14px; }
+.color-picker-input { width: 100%; height: 40px; border: none; border-radius: 8px; cursor: pointer; background: transparent; }
+.color-presets { display: flex; gap: 8px; margin-top: 6px; }
+.color-btn { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #ffffff; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.canvas-element {
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.canvas-element.selected {
+  outline: 1px dashed #00a8ff;
+}
+
+/* 8-Point Resize Handles */
+.resize-handle {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background-color: #ffffff;
+  border: 1px solid #00a8ff;
+  border-radius: 50%;
+  display: none;
+  z-index: 10;
+}
+
+.canvas-element.selected .resize-handle {
+  display: block;
+}
+
+.handle-nw { top: -5px; left: -5px; cursor: nwse-resize; }
+.handle-ne { top: -5px; right: -5px; cursor: nesw-resize; }
+.handle-se { bottom: -5px; right: -5px; cursor: nwse-resize; }
+.handle-sw { bottom: -5px; left: -5px; cursor: nesw-resize; }
+
+.handle-n { top: -5px; left: calc(50% - 5px); cursor: ns-resize; }
+.handle-s { bottom: -5px; left: calc(50% - 5px); cursor: ns-resize; }
+.handle-e { top: calc(50% - 5px); right: -5px; cursor: ew-resize; }
+.handle-w { top: calc(50% - 5px); left: -5px; cursor: ew-resize; }
+
+/* Microsoft Rotation Handle */
+.rotate-handle {
+  position: absolute;
+  top: -24px;
+  left: calc(50% - 6px);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #00a8ff;
+  cursor: grab;
+  display: none;
+  z-index: 10;
+}
+
+.rotate-handle::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 5px;
+  width: 1px;
+  height: 8px;
+  background-color: #00a8ff;
+}
+
+.canvas-element.selected .rotate-handle {
+  display: block;
+}
+
+</style>
 </head>
 
 <body>
@@ -74,16 +756,16 @@
       </button>
     </div>
 
-  </div> <div id="element-popover-menu" class="element-popover" style="display: none;">
+  </div>
+
+  <div id="element-popover-menu" class="element-popover" style="display: none;">
     <button id="pop-crop-btn" title="Crop Element">✂️ Crop</button>
     <button id="pop-layer-up-btn" title="Bring Forward">🔼 Up</button>
     <button id="pop-layer-down-btn" title="Send Backward">🔽 Down</button>
     <button id="pop-delete-btn" class="pop-danger" title="Delete Element">🗑️ Delete</button>
   </div>
 
-
   <div id="menu-backdrop" class="menu-backdrop"></div>
-
 
   <div id="tools-panel" class="tools-panel">
 
@@ -190,7 +872,9 @@
       <button id="delete-selected-btn" class="delete-btn" type="button">Delete Selected Element</button>
     </div>
 
-  </div> <div id="embed-modal" class="modal" style="display: none;">
+  </div>
+
+  <div id="embed-modal" class="modal" style="display: none;">
     <div class="modal-content">
       <h3>Paste HTML / 2D Animation Code</h3>
       <textarea id="html-code-input" placeholder="<style>...</style><div>My 2D Animation</div><script>...</script>"></textarea>
@@ -201,13 +885,11 @@
     </div>
   </div>
 
-
   <div id="crop-modal" class="modal" style="display: none;">
     <div class="modal-content">
       <h3>Crop Element</h3>
       <div id="crop-container" style="position: relative; overflow: hidden; display: inline-block; max-width: 100%; max-height: 300px;">
         <div id="crop-target-wrapper"></div>
-        <div id="crop-box" style="position: absolute; border: 2px dashed #00ff66; background: rgba(0,255,102,0.15); top: 10px; left: 10px; width: 100px; height: 100px; cursor: move;"></div>
       </div>
       <div class="modal-actions">
         <button id="cancel-crop-btn" type="button">Cancel</button>
@@ -215,7 +897,6 @@
       </div>
     </div>
   </div>
-
 
   <div id="shape-modal" class="modal shape-modal" style="display: none;">
     <div class="modal-content shape-picker-content">
@@ -250,6 +931,1190 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  
+<script>document.addEventListener('DOMContentLoaded', () => {
+
+  /* =========================================================
+     DOM ELEMENTS
+  ========================================================= */
+
+  const animListContainer = document.getElementById('animation-list');
+  const slideCanvas = document.getElementById('slide-canvas');
+
+  const addSlideBtn = document.getElementById('add-slide-btn');
+  const slidesList = document.getElementById('slides-list');
+
+  const addTextBtn = document.getElementById('add-text-btn');
+  const addShapeBtn = document.getElementById('add-shape-btn');
+
+  const clearCanvasBtn = document.getElementById('clear-canvas-btn');
+  const playPresentationBtn = document.getElementById('play-presentation-btn');
+
+  const animDurationInput = document.getElementById('anim-duration');
+  const animDelayInput = document.getElementById('anim-delay');
+
+  // COLOR PICKER & FONT SELECTOR DOM
+  const colorPicker = document.getElementById('element-color-picker');
+  const fontSelect = document.getElementById('font-family-select');
+
+  // IMAGE UPLOAD DOM
+  const imageUploadInput = document.getElementById('image-upload-input');
+
+  // FLOATING CONTEXT POPOVER MENU DOM
+  const popoverMenu = document.getElementById('element-popover-menu');
+  const popDeleteBtn = document.getElementById('pop-delete-btn');
+  const popCropBtn = document.getElementById('pop-crop-btn');
+  const popLayerUpBtn = document.getElementById('pop-layer-up-btn');
+  const popLayerDownBtn = document.getElementById('pop-layer-down-btn');
+
+  // CROP MODAL DOM
+  const cropModal = document.getElementById('crop-modal');
+  const cropTargetWrapper = document.getElementById('crop-target-wrapper');
+  const applyCropBtn = document.getElementById('apply-crop-btn');
+  const cancelCropBtn = document.getElementById('cancel-crop-btn');
+
+  // ASPECT RATIO & DOWNLOAD DOM
+  const aspectRatioSelect = document.getElementById('aspect-ratio-select');
+  const downloadPptBtn = document.getElementById('download-ppt-btn');
+  const saveProjectBtn = document.getElementById('save-project-btn') || document.getElementById('save-btn');
+
+
+  /* =========================================================
+     HTML ANIMATION MODAL
+  ========================================================= */
+
+  const addHtmlAnimBtn = document.getElementById('add-html-anim-btn');
+  const embedModal = document.getElementById('embed-modal');
+  const closeModalBtn = document.getElementById('close-modal-btn');
+  const insertHtmlBtn = document.getElementById('insert-html-btn');
+  const htmlCodeInput = document.getElementById('html-code-input');
+
+
+  /* =========================================================
+     SHAPE PICKER MODAL
+  ========================================================= */
+
+  const shapeModal = document.getElementById('shape-modal');
+  const openShapePickerBtn = document.getElementById('open-shape-picker-btn');
+  const closeShapeModalBtn = document.getElementById('close-shape-modal-btn');
+
+
+  /* =========================================================
+     EDITOR MENU
+  ========================================================= */
+
+  const toolsPanel = document.getElementById('tools-panel');
+  const menuBackdrop = document.getElementById('menu-backdrop');
+
+  const toolsMenuBtn = document.getElementById('tools-menu-btn');
+  const toolsMenuBtnBottom = document.getElementById('tools-menu-btn-bottom');
+  const closeToolsBtn = document.getElementById('close-tools-btn');
+  const effectsMenuBtn = document.getElementById('effects-menu-btn');
+  const motionMenuBtn = document.getElementById('motion-menu-btn');
+
+
+  /* =========================================================
+     UNDO / REDO & DELETE
+  ========================================================= */
+
+  const undoBtn = document.getElementById('undo-btn');
+  const redoBtn = document.getElementById('redo-btn');
+  const deleteSelectedBtn = document.getElementById('delete-selected-btn');
+
+
+  /* =========================================================
+     STATE VARIABLES
+  ========================================================= */
+
+  let slides = [{ id: 1, content: '' }];
+  let activeSlideId = 1;
+  let selectedElement = null;
+  let history = [];
+  let historyIndex = -1;
+
+  let cropValues = { top: 0, right: 0, bottom: 0, left: 0 };
+
+
+  /* =========================================================
+     GRID OVERLAY SYSTEM
+  ========================================================= */
+
+  let gridOverlay = document.createElement('div');
+  gridOverlay.className = 'canvas-grid-overlay';
+  gridOverlay.style.cssText = `
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-size: 20px 20px;
+    background-image: 
+      linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    display: none;
+    z-index: 0;
+  `;
+  if (slideCanvas) {
+    slideCanvas.style.position = 'relative';
+    slideCanvas.appendChild(gridOverlay);
+  }
+
+  window.toggleCanvasGrid = function(show) {
+    if (gridOverlay) {
+      gridOverlay.style.display = show ? 'block' : 'none';
+    }
+  };
+
+
+  /* =========================================================
+     TOOLS PANEL LOGIC
+  ========================================================= */
+
+  function openTools(tabName = 'add') {
+    if (toolsPanel) toolsPanel.classList.add('active');
+    if (menuBackdrop) menuBackdrop.classList.add('active');
+
+    document.querySelectorAll('.tool-tab').forEach(tab => {
+      tab.classList.remove('active');
+      if (tab.dataset.tab === tabName) tab.classList.add('active');
+    });
+
+    document.querySelectorAll('.tool-content').forEach(content => {
+      content.classList.remove('active');
+    });
+
+    const targetTab = document.getElementById(`tab-${tabName}`);
+    if (targetTab) targetTab.classList.add('active');
+  }
+
+  function closeTools() {
+    if (toolsPanel) toolsPanel.classList.remove('active');
+    if (menuBackdrop) menuBackdrop.classList.remove('active');
+  }
+
+  if (toolsMenuBtn) toolsMenuBtn.addEventListener('click', () => openTools('add'));
+  if (toolsMenuBtnBottom) toolsMenuBtnBottom.addEventListener('click', () => openTools('add'));
+  if (effectsMenuBtn) effectsMenuBtn.addEventListener('click', () => openTools('effects'));
+  if (motionMenuBtn) motionMenuBtn.addEventListener('click', () => openTools('motion'));
+  if (closeToolsBtn) closeToolsBtn.addEventListener('click', closeTools);
+  if (menuBackdrop) menuBackdrop.addEventListener('click', closeTools);
+
+  document.querySelectorAll('.tool-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabName = tab.dataset.tab;
+      document.querySelectorAll('.tool-tab').forEach(item => item.classList.remove('active'));
+      document.querySelectorAll('.tool-content').forEach(content => content.classList.remove('active'));
+      tab.classList.add('active');
+
+      const targetContent = document.getElementById(`tab-${tabName}`);
+      if (targetContent) targetContent.classList.add('active');
+    });
+  });
+
+
+  /* =========================================================
+     FETCH & RENDER ANIMATIONS
+  ========================================================= */
+
+  fetch('animations.json')
+    .then(res => {
+      if (!res.ok) throw new Error(`Could not load animations.json (${res.status})`);
+      return res.json();
+    })
+    .then(data => {
+      const animations = data.sidebarAnimations || data;
+      if (Array.isArray(animations)) renderSidebar(animations);
+    })
+    .catch(err => console.error('Error loading animations.json:', err));
+
+  function renderSidebar(animations) {
+    if (!animListContainer) return;
+    animListContainer.innerHTML = '';
+
+    animations.forEach(anim => {
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'anim-card';
+      card.innerHTML = `
+        <span>${anim.preview || '🎬'}</span>
+        <strong>${anim.title || 'Untitled Animation'}</strong>
+      `;
+
+      card.addEventListener('click', () => {
+        if (!anim.source) return;
+        createHtmlAnimationElement({ sourceUrl: anim.source });
+      });
+
+      animListContainer.appendChild(card);
+    });
+  }
+
+
+  /* =========================================================
+     HTML ANIMATION MODAL LOGIC
+  ========================================================= */
+
+  if (addHtmlAnimBtn) {
+    addHtmlAnimBtn.addEventListener('click', () => {
+      if (embedModal) embedModal.style.display = 'flex';
+    });
+  }
+
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', () => {
+      if (embedModal) embedModal.style.display = 'none';
+      if (htmlCodeInput) htmlCodeInput.value = '';
+    });
+  }
+
+  if (insertHtmlBtn) {
+    insertHtmlBtn.addEventListener('click', () => {
+      if (!htmlCodeInput) return;
+      const code = htmlCodeInput.value.trim();
+      if (!code) return;
+
+      createHtmlAnimationElement({ rawCode: code });
+      if (embedModal) embedModal.style.display = 'none';
+      htmlCodeInput.value = '';
+    });
+  }
+
+  function createHtmlAnimationElement({ rawCode, sourceUrl }) {
+    removePlaceholder();
+
+    const container = document.createElement('div');
+    container.className = 'canvas-element html-anim-element';
+    container.style.width = '240px';
+    container.style.height = '160px';
+
+    const iframe = document.createElement('iframe');
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = 'none';
+    iframe.style.pointerEvents = 'none';
+
+    if (rawCode) {
+      iframe.srcdoc = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            html, body { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden; }
+          </style>
+        </head>
+        <body>${rawCode}</body>
+        </html>
+      `;
+    } else if (sourceUrl) {
+      iframe.src = sourceUrl;
+    }
+
+    container.appendChild(iframe);
+    attachOfficeControls(container);
+    setupElement(container);
+    saveHistory();
+  }
+
+
+  /* =========================================================
+     LOCAL IMAGE UPLOAD SYSTEM
+  ========================================================= */
+
+  if (imageUploadInput) {
+    imageUploadInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        createImageElement(event.target.result);
+      };
+      reader.readAsDataURL(file);
+      e.target.value = '';
+    });
+  }
+
+  function createImageElement(src) {
+    removePlaceholder();
+
+    const container = document.createElement('div');
+    container.className = 'canvas-element image-element';
+    container.style.width = '180px';
+    container.style.height = '140px';
+
+    const img = document.createElement('img');
+    img.src = src;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'cover';
+    img.style.pointerEvents = 'none';
+    container.appendChild(img);
+
+    attachOfficeControls(container);
+    setupElement(container);
+    saveHistory();
+  }
+
+
+  /* =========================================================
+     SHAPE PICKER MODAL CONTROL & CREATION
+  ========================================================= */
+
+  function openShapePicker() {
+    if (shapeModal) shapeModal.style.display = 'flex';
+  }
+
+  function closeShapePicker() {
+    if (shapeModal) shapeModal.style.display = 'none';
+  }
+
+  if (addShapeBtn) addShapeBtn.addEventListener('click', openShapePicker);
+  if (openShapePickerBtn) openShapePickerBtn.addEventListener('click', openShapePicker);
+  if (closeShapeModalBtn) closeShapeModalBtn.addEventListener('click', closeShapePicker);
+
+  document.querySelectorAll('.shape-option').forEach(button => {
+    button.addEventListener('click', () => {
+      const shapeType = button.dataset.shape;
+      createShape(shapeType);
+      closeShapePicker();
+    });
+  });
+
+  function createShape(shapeType) {
+    removePlaceholder();
+
+    const shapeEl = document.createElement('div');
+    shapeEl.className = `canvas-element shape-element shape-${shapeType}`;
+    shapeEl.dataset.shape = shapeType;
+    shapeEl.style.width = '100px';
+    shapeEl.style.height = '100px';
+
+    const symbolShapes = {
+      'star': '★',
+      'heart': '♥',
+      'cloud': '☁'
+    };
+
+    if (symbolShapes[shapeType]) {
+      shapeEl.innerText = symbolShapes[shapeType];
+      shapeEl.classList.add('symbol-shape');
+      shapeEl.style.fontSize = '70px';
+      shapeEl.style.lineHeight = '100px';
+    }
+
+    attachOfficeControls(shapeEl);
+    setupElement(shapeEl);
+    saveHistory();
+  }
+
+
+  /* =========================================================
+     SLIDE MANAGEMENT
+  ========================================================= */
+
+  if (addSlideBtn) {
+    addSlideBtn.addEventListener('click', () => {
+      saveCurrentSlideState();
+      const newId = slides.length > 0 ? Math.max(...slides.map(s => s.id)) + 1 : 1;
+      slides.push({ id: newId, content: '' });
+      activeSlideId = newId;
+
+      renderSlideThumbnails();
+      slideCanvas.innerHTML = `<p class="placeholder">Tap + to add elements</p>`;
+      if (gridOverlay) slideCanvas.appendChild(gridOverlay);
+      deselectAll();
+      saveHistory();
+    });
+  }
+
+  function renderSlideThumbnails() {
+    if (!slidesList) return;
+    slidesList.innerHTML = '';
+
+    slides.forEach((slide, index) => {
+      const thumb = document.createElement('div');
+      thumb.className = `slide-thumb ${slide.id === activeSlideId ? 'active' : ''}`;
+      thumb.innerText = index + 1;
+
+      thumb.addEventListener('click', () => {
+        if (slide.id === activeSlideId) return;
+        saveCurrentSlideState();
+        switchSlide(slide.id);
+      });
+
+      slidesList.appendChild(thumb);
+    });
+  }
+
+  function saveCurrentSlideState() {
+    const currentSlide = slides.find(s => s.id === activeSlideId);
+    if (currentSlide && slideCanvas) currentSlide.content = slideCanvas.innerHTML;
+  }
+
+  function switchSlide(id) {
+    activeSlideId = id;
+    const slide = slides.find(item => item.id === id);
+    if (slideCanvas) {
+      slideCanvas.innerHTML = slide ? slide.content : '';
+      if (gridOverlay && !slideCanvas.contains(gridOverlay)) {
+        slideCanvas.appendChild(gridOverlay);
+      }
+    }
+
+    renderSlideThumbnails();
+    deselectAll();
+    rebindCanvasElements();
+  }
+
+
+  /* =========================================================
+     ADD TEXT
+  ========================================================= */
+
+  if (addTextBtn) {
+    addTextBtn.addEventListener('click', () => {
+      removePlaceholder();
+
+      const textEl = document.createElement('div');
+      textEl.className = 'canvas-element text-element';
+      textEl.contentEditable = 'true';
+      textEl.innerText = 'Editable Text';
+
+      attachOfficeControls(textEl);
+      setupElement(textEl);
+      saveHistory();
+    });
+  }
+
+
+  /* =========================================================
+     HANDLES & ROTATION SYSTEM
+  ========================================================= */
+
+  function attachOfficeControls(el) {
+    if (el.querySelector('.rotate-handle')) return;
+
+    const rotHandle = document.createElement('div');
+    rotHandle.className = 'rotate-handle';
+    rotHandle.title = 'Rotate Element';
+    el.appendChild(rotHandle);
+
+    const positions = ['nw', 'ne', 'se', 'sw', 'n', 's', 'e', 'w'];
+    positions.forEach(pos => {
+      const h = document.createElement('div');
+      h.className = `resize-handle handle-${pos}`;
+      h.dataset.direction = pos;
+      el.appendChild(h);
+      makeResizableAdvanced(el, h, pos);
+    });
+
+    makeRotatable(el, rotHandle);
+  }
+
+  function makeRotatable(el, handle) {
+    let isRotating = false;
+
+    const startRotate = e => {
+      e.preventDefault();
+      e.stopPropagation();
+      isRotating = true;
+
+      const rect = el.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      const doRotate = moveEvent => {
+        if (!isRotating) return;
+        const p = moveEvent.touches ? moveEvent.touches[0] : moveEvent;
+        const rad = Math.atan2(p.clientY - centerY, p.clientX - centerX);
+        let deg = rad * (180 / Math.PI) - 90;
+        
+        if (moveEvent.shiftKey) deg = Math.round(deg / 15) * 15;
+
+        el.style.transform = `rotate(${deg}deg)`;
+        el.dataset.rotation = deg;
+
+        if (selectedElement === el) positionPopover(el);
+      };
+
+      const stopRotate = () => {
+        if (!isRotating) return;
+        isRotating = false;
+        window.removeEventListener('mousemove', doRotate);
+        window.removeEventListener('touchmove', doRotate);
+        window.removeEventListener('mouseup', stopRotate);
+        window.removeEventListener('touchend', stopRotate);
+        saveHistory();
+      };
+
+      window.addEventListener('mousemove', doRotate);
+      window.addEventListener('touchmove', doRotate, { passive: false });
+      window.addEventListener('mouseup', stopRotate);
+      window.addEventListener('touchend', stopRotate);
+    };
+
+    handle.addEventListener('mousedown', startRotate);
+    handle.addEventListener('touchstart', startRotate, { passive: false });
+  }
+
+  function makeResizableAdvanced(el, handle, dir) {
+    let isResizing = false;
+    let startX = 0, startY = 0;
+    let startW = 0, startH = 0, startL = 0, startT = 0;
+
+    const startResize = e => {
+      e.preventDefault();
+      e.stopPropagation();
+      isResizing = true;
+
+      const p = e.touches ? e.touches[0] : e;
+      startX = p.clientX;
+      startY = p.clientY;
+      startW = el.offsetWidth;
+      startH = el.offsetHeight;
+      startL = el.offsetLeft;
+      startT = el.offsetTop;
+
+      const doResize = moveEvent => {
+        if (!isResizing) return;
+        const point = moveEvent.touches ? moveEvent.touches[0] : moveEvent;
+        const dx = point.clientX - startX;
+        const dy = point.clientY - startY;
+
+        let nw = startW, nh = startH, nl = startL, nt = startT;
+
+        if (dir.includes('e')) nw = Math.max(30, startW + dx);
+        if (dir.includes('s')) nh = Math.max(30, startH + dy);
+        if (dir.includes('w')) {
+          const possibleW = startW - dx;
+          if (possibleW > 30) { nw = possibleW; nl = startL + dx; }
+        }
+        if (dir.includes('n')) {
+          const possibleH = startH - dy;
+          if (possibleH > 30) { nh = possibleH; nt = startT + dy; }
+        }
+
+        el.style.width = `${nw}px`;
+        el.style.height = `${nh}px`;
+        el.style.left = `${nl}px`;
+        el.style.top = `${nt}px`;
+
+        if (el.classList.contains('symbol-shape')) {
+          const minDim = Math.min(nw, nh);
+          el.style.fontSize = `${minDim * 0.7}px`;
+          el.style.lineHeight = `${nh}px`;
+        }
+
+        if (selectedElement === el) positionPopover(el);
+      };
+
+      const stopResize = () => {
+        if (!isResizing) return;
+        isResizing = false;
+        window.removeEventListener('mousemove', doResize);
+        window.removeEventListener('touchmove', doResize);
+        window.removeEventListener('mouseup', stopResize);
+        window.removeEventListener('touchend', stopResize);
+        saveHistory();
+      };
+
+      window.addEventListener('mousemove', doResize);
+      window.addEventListener('touchmove', doResize, { passive: false });
+      window.addEventListener('mouseup', stopResize);
+      window.addEventListener('touchend', stopResize);
+    };
+
+    handle.addEventListener('mousedown', startResize);
+    handle.addEventListener('touchstart', startResize, { passive: false });
+  }
+
+
+  /* =========================================================
+     ELEMENT SETUP & SELECTION
+  ========================================================= */
+
+  function removePlaceholder() {
+    if (!slideCanvas) return;
+    const placeholder = slideCanvas.querySelector('.placeholder');
+    if (placeholder) placeholder.remove();
+  }
+
+  function setupElement(el) {
+    if (!el) return;
+    if (!el.style.top) el.style.top = '25%';
+    if (!el.style.left) el.style.left = '25%';
+
+    el.addEventListener('click', elementClickHandler);
+    el.addEventListener('touchstart', elementClickHandler, { passive: true });
+    makeDraggable(el);
+    slideCanvas.appendChild(el);
+    selectElement(el);
+  }
+
+  function elementClickHandler(e) {
+    e.stopPropagation();
+    selectElement(e.currentTarget);
+  }
+
+  function positionPopover(el) {
+    if (!el || !popoverMenu || !slideCanvas) return;
+    const canvasRect = slideCanvas.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+
+    popoverMenu.style.display = 'flex';
+    popoverMenu.style.left = `${Math.max(10, elRect.left - canvasRect.left)}px`;
+    popoverMenu.style.top = `${Math.max(10, elRect.top - canvasRect.top - 48)}px`;
+  }
+
+  function hidePopover() {
+    if (popoverMenu) popoverMenu.style.display = 'none';
+  }
+
+  function selectElement(el) {
+    if (!el) return;
+    deselectAll();
+    selectedElement = el;
+    selectedElement.classList.add('selected');
+
+    positionPopover(selectedElement);
+
+    if (animDurationInput) {
+      const duration = parseFloat(el.style.animationDuration);
+      animDurationInput.value = Number.isFinite(duration) ? duration : 1;
+    }
+
+    if (animDelayInput) {
+      const delay = parseFloat(el.style.animationDelay);
+      animDelayInput.value = Number.isFinite(delay) ? delay : 0;
+    }
+
+    if (fontSelect && el.style.fontFamily) {
+      fontSelect.value = el.style.fontFamily;
+    }
+
+    if (colorPicker) {
+      let currentColor = '';
+      if (el.classList.contains('text-element') || el.classList.contains('symbol-shape')) {
+        currentColor = el.style.color;
+      } else {
+        currentColor = el.style.backgroundColor;
+      }
+      if (currentColor) {
+        colorPicker.value = rgbToHex(currentColor) || '#6c5ce7';
+      }
+    }
+  }
+
+  function deselectAll() {
+    selectedElement = null;
+    hidePopover();
+    if (!slideCanvas) return;
+    slideCanvas.querySelectorAll('.canvas-element, .anim-box').forEach(el => {
+      el.classList.remove('selected');
+    });
+  }
+
+  if (slideCanvas) {
+    slideCanvas.addEventListener('click', deselectAll);
+  }
+
+
+  /* =========================================================
+     POPOVER ACTIONS (DELETE, LAYERS)
+  ========================================================= */
+
+  if (popDeleteBtn) {
+    popDeleteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (selectedElement) {
+        selectedElement.remove();
+        selectedElement = null;
+        hidePopover();
+        saveHistory();
+      }
+    });
+  }
+
+  if (popLayerUpBtn) {
+    popLayerUpBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (selectedElement) {
+        let currentZ = parseInt(window.getComputedStyle(selectedElement).zIndex) || 1;
+        selectedElement.style.zIndex = currentZ + 1;
+        saveHistory();
+      }
+    });
+  }
+
+  if (popLayerDownBtn) {
+    popLayerDownBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (selectedElement) {
+        let currentZ = parseInt(window.getComputedStyle(selectedElement).zIndex) || 1;
+        selectedElement.style.zIndex = Math.max(1, currentZ - 1);
+        saveHistory();
+      }
+    });
+  }
+
+
+  /* =========================================================
+     KEYBOARD HOTKEYS (DELETE / BACKSPACE)
+  ========================================================= */
+
+  document.addEventListener('keydown', (e) => {
+    if (!selectedElement) return;
+
+    if (e.target.isContentEditable || ['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+
+    if (e.key === 'Delete' || e.key === 'Backspace') {
+      e.preventDefault();
+      selectedElement.remove();
+      selectedElement = null;
+      hidePopover();
+      saveHistory();
+    }
+  });
+
+
+  /* =========================================================
+     4-DIRECTIONAL SLIDER BASED CROPPING SYSTEM
+  ========================================================= */
+
+  if (popCropBtn) {
+    popCropBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!selectedElement || !cropModal || !cropTargetWrapper) return;
+
+      cropValues = { top: 0, right: 0, bottom: 0, left: 0 };
+
+      cropTargetWrapper.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:10px; width:100%; color:#fff; padding:10px 0;">
+          <label style="font-size:12px;">Top Crop: <span id="crop-top-val">0%</span>
+            <input type="range" id="crop-top-slider" min="0" max="80" value="0" style="width:100%;">
+          </label>
+          <label style="font-size:12px;">Bottom Crop: <span id="crop-bottom-val">0%</span>
+            <input type="range" id="crop-bottom-slider" min="0" max="80" value="0" style="width:100%;">
+          </label>
+          <label style="font-size:12px;">Left Crop: <span id="crop-left-val">0%</span>
+            <input type="range" id="crop-left-slider" min="0" max="80" value="0" style="width:100%;">
+          </label>
+          <label style="font-size:12px;">Right Crop: <span id="crop-right-val">0%</span>
+            <input type="range" id="crop-right-slider" min="0" max="80" value="0" style="width:100%;">
+          </label>
+        </div>
+      `;
+
+      cropModal.style.display = 'flex';
+
+      const topS = document.getElementById('crop-top-slider');
+      const botS = document.getElementById('crop-bottom-slider');
+      const leftS = document.getElementById('crop-left-slider');
+      const rightS = document.getElementById('crop-right-slider');
+
+      const updatePreview = () => {
+        cropValues.top = topS.value;
+        cropValues.bottom = botS.value;
+        cropValues.left = leftS.value;
+        cropValues.right = rightS.value;
+
+        document.getElementById('crop-top-val').innerText = `${cropValues.top}%`;
+        document.getElementById('crop-bottom-val').innerText = `${cropValues.bottom}%`;
+        document.getElementById('crop-left-val').innerText = `${cropValues.left}%`;
+        document.getElementById('crop-right-val').innerText = `${cropValues.right}%`;
+
+        selectedElement.style.clipPath = `inset(${cropValues.top}% ${cropValues.right}% ${cropValues.bottom}% ${cropValues.left}%)`;
+      };
+
+      topS.addEventListener('input', updatePreview);
+      botS.addEventListener('input', updatePreview);
+      leftS.addEventListener('input', updatePreview);
+      rightS.addEventListener('input', updatePreview);
+    });
+  }
+
+  if (cancelCropBtn) {
+    cancelCropBtn.addEventListener('click', () => {
+      if (cropModal) cropModal.style.display = 'none';
+    });
+  }
+
+  if (applyCropBtn) {
+    applyCropBtn.addEventListener('click', () => {
+      if (cropModal) cropModal.style.display = 'none';
+      hidePopover();
+      saveHistory();
+    });
+  }
+
+
+  /* =========================================================
+     FIXED SAVE & DOWNLOAD SYSTEM (WORKS BOTH FOR PPT & JSON SAVE)
+  ========================================================= */
+
+  if (aspectRatioSelect) {
+    aspectRatioSelect.addEventListener('change', (e) => {
+      const ratio = e.target.value;
+      if (!slideCanvas) return;
+      slideCanvas.classList.remove('ratio-16-9', 'ratio-4-3', 'ratio-1-1');
+      slideCanvas.classList.add(`ratio-${ratio}`);
+    });
+  }
+
+  function triggerDownload(content, filename, type) {
+    const blob = new Blob([content], { type: type });
+    const a = document.createElement('a');
+    a.href = URL.revokeObjectURL(a.href) || URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+    }, 100);
+  }
+
+  function handleSaveOrExport() {
+    deselectAll();
+    saveCurrentSlideState();
+
+    let slidesContent = '';
+    slides.forEach((s, idx) => {
+      slidesContent += `
+        <div class="slide-page">
+          <div class="slide-number">Slide ${idx + 1}</div>
+          ${s.content}
+        </div>
+      `;
+    });
+
+    const fullHTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentation</title>
+  <style>
+    body { margin: 0; padding: 20px; font-family: system-ui, sans-serif; background: #0f0f13; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .slide-page { position: relative; width: 100%; max-width: 800px; height: 450px; background: #ffffff; color: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .slide-number { position: absolute; bottom: 8px; right: 12px; font-size: 12px; color: #888; z-index: 999; }
+    .canvas-element { position: absolute; }
+  </style>
+</head>
+<body>
+  ${slidesContent}
+</body>
+</html>
+    `;
+
+    triggerDownload(fullHTML, `Presentation_${Date.now()}.html`, 'text/html');
+  }
+
+  if (downloadPptBtn) {
+    downloadPptBtn.addEventListener('click', handleSaveOrExport);
+  }
+
+  if (saveProjectBtn) {
+    saveProjectBtn.addEventListener('click', handleSaveOrExport);
+  }
+
+
+  /* =========================================================
+     COLOR PICKER & FONT CONTROLS LOGIC
+  ========================================================= */
+
+  function applyColorToElement(color) {
+    if (!selectedElement) return;
+    if (selectedElement.classList.contains('text-element') || selectedElement.classList.contains('symbol-shape')) {
+      selectedElement.style.color = color;
+    } else {
+      selectedElement.style.backgroundColor = color;
+    }
+  }
+
+  if (colorPicker) {
+    colorPicker.addEventListener('input', (e) => {
+      if (!selectedElement) return;
+      applyColorToElement(e.target.value);
+      saveHistory();
+    });
+  }
+
+  document.querySelectorAll('.color-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!selectedElement) {
+        alert('Select an element on the canvas first!');
+        return;
+      }
+      const color = btn.dataset.color;
+      if (colorPicker) colorPicker.value = color;
+      applyColorToElement(color);
+      saveHistory();
+    });
+  });
+
+  if (fontSelect) {
+    fontSelect.addEventListener('change', (e) => {
+      if (!selectedElement) {
+        alert('Select a text box or element first!');
+        return;
+      }
+      selectedElement.style.fontFamily = e.target.value;
+      saveHistory();
+    });
+  }
+
+  function rgbToHex(rgbStr) {
+    if (!rgbStr || !rgbStr.startsWith('rgb')) return rgbStr;
+    const rgb = rgbStr.match(/\d+/g);
+    if (!rgb || rgb.length < 3) return '#6c5ce7';
+    return "#" + ((1 << 24) + (parseInt(rgb[0]) << 16) + (parseInt(rgb[1]) << 8) + parseInt(rgb[2])).toString(16).slice(1);
+  }
+
+
+  /* =========================================================
+     ANIMATION & CANVAS CONTROLS
+  ========================================================= */
+
+  if (animDurationInput) {
+    animDurationInput.addEventListener('change', e => {
+      if (!selectedElement) return;
+      selectedElement.style.animationDuration = `${e.target.value}s`;
+      saveHistory();
+    });
+  }
+
+  if (animDelayInput) {
+    animDelayInput.addEventListener('change', e => {
+      if (!selectedElement) return;
+      selectedElement.style.animationDelay = `${e.target.value}s`;
+      saveHistory();
+    });
+  }
+
+  if (clearCanvasBtn) {
+    clearCanvasBtn.addEventListener('click', () => {
+      if (!slideCanvas) return;
+      slideCanvas.innerHTML = `<p class="placeholder">Tap + to add elements</p>`;
+      if (gridOverlay) slideCanvas.appendChild(gridOverlay);
+      selectedElement = null;
+      hidePopover();
+      saveHistory();
+    });
+  }
+
+  if (playPresentationBtn) {
+    playPresentationBtn.addEventListener('click', () => {
+      deselectAll();
+      const elements = slideCanvas.querySelectorAll('.canvas-element, .anim-box');
+
+      elements.forEach(el => {
+        const computedStyle = getComputedStyle(el);
+        const animationName = computedStyle.animationName;
+        if (!animationName || animationName === 'none') return;
+
+        const duration = computedStyle.animationDuration;
+        const timing = computedStyle.animationTimingFunction;
+        const delay = computedStyle.animationDelay;
+        const iteration = computedStyle.animationIterationCount;
+
+        el.style.animation = 'none';
+        void el.offsetWidth;
+        el.style.animation = `${animationName} ${duration} ${timing} ${delay} ${iteration}`;
+      });
+    });
+  }
+
+
+  /* =========================================================
+     REBIND ELEMENTS ON HISTORY / SLIDE SWITCH
+  ========================================================= */
+
+  function rebindCanvasElements() {
+    if (!slideCanvas) return;
+    const elements = slideCanvas.querySelectorAll('.canvas-element, .anim-box');
+
+    elements.forEach(el => {
+      delete el.dataset.draggable;
+      el.addEventListener('click', elementClickHandler);
+      el.addEventListener('touchstart', elementClickHandler, { passive: true });
+      makeDraggable(el);
+      attachOfficeControls(el);
+    });
+  }
+
+
+  /* =========================================================
+     DRAG LOGIC
+  ========================================================= */
+
+  function makeDraggable(el) {
+    if (!el || el.dataset.draggable === 'true') return;
+    el.dataset.draggable = 'true';
+
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    let initialLeft = 0, initialTop = 0;
+
+    const startDrag = e => {
+      if (e.target.closest('.resize-handle') || e.target.closest('.rotate-handle')) return;
+      if (e.target.isContentEditable && document.activeElement === e.target) return;
+
+      const point = e.touches ? e.touches[0] : e;
+      isDragging = true;
+      startX = point.clientX;
+      startY = point.clientY;
+      initialLeft = el.offsetLeft;
+      initialTop = el.offsetTop;
+
+      const doDrag = dragEvent => {
+        if (!isDragging) return;
+        dragEvent.preventDefault();
+        const p = dragEvent.touches ? dragEvent.touches[0] : dragEvent;
+        const dx = p.clientX - startX;
+        const dy = p.clientY - startY;
+        el.style.left = `${initialLeft + dx}px`;
+        el.style.top = `${initialTop + dy}px`;
+
+        if (selectedElement === el) {
+          positionPopover(el);
+        }
+      };
+
+      const stopDrag = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        window.removeEventListener('mousemove', doDrag);
+        window.removeEventListener('touchmove', doDrag);
+        window.removeEventListener('mouseup', stopDrag);
+        window.removeEventListener('touchend', stopDrag);
+        saveHistory();
+      };
+
+      window.addEventListener('mousemove', doDrag);
+      window.addEventListener('touchmove', doDrag, { passive: false });
+      window.addEventListener('mouseup', stopDrag);
+      window.addEventListener('touchend', stopDrag);
+    };
+
+    el.addEventListener('touchstart', startDrag, { passive: false });
+    el.addEventListener('mousedown', startDrag);
+  }
+
+
+  /* =========================================================
+     EFFECTS & MOTION
+  ========================================================= */
+
+  document.querySelectorAll('[data-effect]').forEach(button => {
+    button.addEventListener('click', () => {
+      if (!selectedElement) {
+        alert('Select an element first');
+        return;
+      }
+      const effect = button.dataset.effect;
+      selectedElement.classList.remove('effect-glow', 'effect-shadow', 'effect-glass', 'effect-neon', 'effect-3d');
+      if (effect !== 'effect-remove') selectedElement.classList.add(effect);
+      saveHistory();
+    });
+  });
+
+  document.querySelectorAll('[data-motion]').forEach(button => {
+    button.addEventListener('click', () => {
+      if (!selectedElement) {
+        alert('Select an element first');
+        return;
+      }
+      const motion = button.dataset.motion;
+      selectedElement.classList.remove('motion-float', 'motion-pulse', 'motion-shake', 'motion-spin', 'motion-bounce');
+      selectedElement.classList.add(motion);
+      saveHistory();
+    });
+  });
+
+  if (deleteSelectedBtn) {
+    deleteSelectedBtn.addEventListener('click', () => {
+      if (!selectedElement) {
+        alert('Select an element first');
+        return;
+      }
+      selectedElement.remove();
+      selectedElement = null;
+      hidePopover();
+      saveHistory();
+      closeTools();
+    });
+  }
+
+
+  /* =========================================================
+     UNDO / REDO HISTORY
+  ========================================================= */
+
+  function saveHistory() {
+    saveCurrentSlideState();
+    const snapshot = JSON.stringify({ slides, activeSlideId });
+
+    if (historyIndex >= 0 && history[historyIndex] === snapshot) {
+      updateUndoRedoButtons();
+      return;
+    }
+
+    history = history.slice(0, historyIndex + 1);
+    history.push(snapshot);
+    if (history.length > 50) history.shift();
+    historyIndex = history.length - 1;
+    updateUndoRedoButtons();
+  }
+
+  function undo() {
+    if (historyIndex <= 0) return;
+    historyIndex--;
+    restoreHistory();
+  }
+
+  function redo() {
+    if (historyIndex >= history.length - 1) return;
+    historyIndex++;
+    restoreHistory();
+  }
+
+  function restoreHistory() {
+    const state = JSON.parse(history[historyIndex]);
+    slides = state.slides;
+    activeSlideId = state.activeSlideId;
+
+    const activeSlide = slides.find(slide => slide.id === activeSlideId);
+    if (slideCanvas) {
+      slideCanvas.innerHTML = activeSlide ? activeSlide.content : '';
+      if (gridOverlay && !slideCanvas.contains(gridOverlay)) {
+        slideCanvas.appendChild(gridOverlay);
+      }
+    }
+
+    renderSlideThumbnails();
+    deselectAll();
+    rebindCanvasElements();
+    updateUndoRedoButtons();
+  }
+
+  function updateUndoRedoButtons() {
+    if (undoBtn) undoBtn.disabled = historyIndex <= 0;
+    if (redoBtn) redoBtn.disabled = historyIndex >= history.length - 1;
+  }
+
+  if (undoBtn) undoBtn.addEventListener('click', undo);
+  if (redoBtn) redoBtn.addEventListener('click', redo);
+
+
+  /* =========================================================
+     INITIAL SETUP
+  ========================================================= */
+
+  renderSlideThumbnails();
+  saveHistory();
+
+});
+</script>
 </body>
 </html>
