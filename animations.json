@@ -1,5 +1,71 @@
 [
   {
+    "id": "anim_3d_model",
+    "title": "3D Model",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/3d%20model.html",
+    "preview": "📦"
+  },
+  {
+    "id": "anim_blockpush",
+    "title": "Blockpush",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Blockpush.html",
+    "preview": "🧱"
+  },
+  {
+    "id": "anim_burger",
+    "title": "Burger",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Burger.html",
+    "preview": "🍔"
+  },
+  {
+    "id": "anim_charli",
+    "title": "Charli",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Charli.html",
+    "preview": "🕺"
+  },
+  {
+    "id": "anim_chromatography",
+    "title": "Chromatography",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Chromatography.html",
+    "preview": "🧪"
+  },
+  {
+    "id": "anim_creepy_button",
+    "title": "Creepy Button",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/creepy%20button.html",
+    "preview": "👁️"
+  },
+  {
+    "id": "anim_crystallization",
+    "title": "Crystallization",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/crystallization.html",
+    "preview": "💎"
+  },
+  {
+    "id": "anim_distillation_setup",
+    "title": "Distillation Setup",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Distillation%20setup.html",
+    "preview": "⚗️"
+  },
+  {
+    "id": "anim_evaporation_vs_boiling",
+    "title": "Evaporation Vs Boiling",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Evaporation%20Vs%20boiling.html",
+    "preview": "♨️"
+  },
+  {
+    "id": "anim_flower",
+    "title": "Flower",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Flower.html",
+    "preview": "🌸"
+  },
+  {
+    "id": "anim_fps",
+    "title": "Fps",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Fps.html",
+    "preview": "🎮"
+  },
+  {
     "id": "anim_icecream",
     "title": "Ice Cream",
     "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Icecream.html",
@@ -18,9 +84,123 @@
     "preview": "🎢"
   },
   {
+    "id": "anim_lamp_design",
+    "title": "Lamp Design",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Lamp%20design.html",
+    "preview": "💡"
+  },
+  {
     "id": "anim_linear_motion",
     "title": "Linear Motion",
     "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/linearmotion.html",
     "preview": "📐"
+  },
+  {
+    "id": "anim_magnet",
+    "title": "Magnet",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Magnet.html",
+    "preview": "🧲"
+  },
+  {
+    "id": "anim_magnets_direction",
+    "title": "Magnets Direction",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Magnets%20direction.html",
+    "preview": "🧭"
+  },
+  {
+    "id": "anim_mindmap1",
+    "title": "Mindmap 1",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Mindmap1.html",
+    "preview": "🧠"
+  },
+  {
+    "id": "anim_mindmapsolution",
+    "title": "Mindmap Solution",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Mindmapsolution.html",
+    "preview": "💡"
+  },
+  {
+    "id": "anim_mixture",
+    "title": "Mixture",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Mixture.html",
+    "preview": "🥣"
+  },
+  {
+    "id": "anim_mixture_and_solution",
+    "title": "Mixture and Solution",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Mixture%20and%20solution.html",
+    "preview": "🧪"
+  },
+  {
+    "id": "anim_rotating_star",
+    "title": "Rotating Star",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Rotating_star.html",
+    "preview": "⭐"
+  },
+  {
+    "id": "anim_sardarji",
+    "title": "Sardarji",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Sardarji.html",
+    "preview": "👳"
+  },
+  {
+    "id": "anim_solar_system",
+    "title": "Solar System",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/solar%20system.html",
+    "preview": "🪐"
+  },
+  {
+    "id": "anim_solubility",
+    "title": "Solubility",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Solubility.html",
+    "preview": "💧"
+  },
+  {
+    "id": "anim_sublimation",
+    "title": "Sublimation",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Sublimation.html",
+    "preview": "💨"
+  },
+  {
+    "id": "anim_test_card",
+    "title": "Test Card",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Test%20card.html",
+    "preview": "🃏"
+  },
+  {
+    "id": "anim_test_card_bro",
+    "title": "Test Card Bro",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Test%20card%20bro.html",
+    "preview": "🎴"
+  },
+  {
+    "id": "anim_vaccum_evaporation",
+    "title": "Vaccum Evaporation",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/vaccum%20evaporation.html",
+    "preview": "🌫️"
+  },
+  {
+    "id": "anim_vortex",
+    "title": "Vortex",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Vortex.html",
+    "preview": "🌀"
+  },
+  {
+    "id": "anim_warli",
+    "title": "Warli",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Warli.html",
+    "preview": "🎨"
+  },
+  {
+    "id": "anim_water_cycle",
+    "title": "Water Cycle",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Water_cycle.html",
+    "preview": "🌧️"
+  },
+  {
+    "id": "anim_watercycle",
+    "title": "Watercycle",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Watercycle.html",
+    "preview": "🌊"
   }
 ]
