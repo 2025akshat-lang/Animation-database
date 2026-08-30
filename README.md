@@ -1,6 +1,4 @@
 
-
-### ⚡ System & Low-Level / Hardware Languages
 ![C](https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=c&logoColor=black)
 ![C++](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 ![Rust](https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white)
@@ -15,7 +13,7 @@
 ![Verilog](https://img.shields.io/badge/Verilog-00599C?style=for-the-badge)
 ![VHDL](https://img.shields.io/badge/VHDL-595959?style=for-the-badge)
 
-### 🚀 Enterprise & General Purpose
+
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
@@ -27,7 +25,7 @@
 ![Groovy](https://img.shields.io/badge/Apache_Groovy-4298B8?style=for-the-badge&logo=apachegroovy&logoColor=white)
 ![Objective-C](https://img.shields.io/badge/Objective--C-0B5A9D?style=for-the-badge&logo=apple&logoColor=white)
 
-### 🌐 Web & Frontend Ecosystem
+
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
@@ -39,7 +37,7 @@
 ![Stylus](https://img.shields.io/badge/Stylus-ff6347?style=for-the-badge&logo=stylus&logoColor=white)
 ![CoffeeScript](https://img.shields.io/badge/CoffeeScript-2F2E2C?style=for-the-badge&logo=coffeescript&logoColor=white)
 
-### 🧪 Functional & Mathematical Languages
+
 ![Haskell](https://img.shields.io/badge/Haskell-5D4F85?style=for-the-badge&logo=haskell&logoColor=white)
 ![Elixir](https://img.shields.io/badge/Elixir-4B275F?style=for-the-badge&logo=elixir&logoColor=white)
 ![Erlang](https://img.shields.io/badge/Erlang-A9008A?style=for-the-badge&logo=erlang&logoColor=white)
@@ -54,7 +52,7 @@
 ![ReasonML](https://img.shields.io/badge/ReasonML-DD4B39?style=for-the-badge&logo=reason&logoColor=white)
 ![Crystal](https://img.shields.io/badge/Crystal-000000?style=for-the-badge&logo=crystal&logoColor=white)
 
-### 📊 Data Science, Analytics & AI
+
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![R](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white)
 ![Julia](https://img.shields.io/badge/Julia-9558B2?style=for-the-badge&logo=julia&logoColor=white)
@@ -64,7 +62,7 @@
 ![Stata](https://img.shields.io/badge/Stata-1A5276?style=for-the-badge)
 ![Wolfram](https://img.shields.io/badge/Wolfram_Language-DD1100?style=for-the-badge&logo=wolfram&logoColor=white)
 
-### 🐚 Scripting, Automation & Shells
+
 ![Bash](https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnu-bash&logoColor=white)
 ![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
 ![Zsh](https://img.shields.io/badge/Zsh-F1502F?style=for-the-badge)
@@ -75,7 +73,7 @@
 ![Tcl](https://img.shields.io/badge/Tcl-1B5B91?style=for-the-badge)
 ![AutoHotkey](https://img.shields.io/badge/AutoHotkey-3B5998?style=for-the-badge)
 
-### 🗄️ Database, Queries & Markup
+
 ![SQL](https://img.shields.io/badge/SQL-4479A1?style=for-the-badge&logo=sqlite&logoColor=white)
 ![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white)
 ![PL/SQL](https://img.shields.io/badge/PL/SQL-F80000?style=for-the-badge&logo=oracle&logoColor=white)
@@ -87,7 +85,7 @@
 ![XML](https://img.shields.io/badge/XML-005F87?style=for-the-badge)
 ![TOML](https://img.shields.io/badge/TOML-9C4221?style=for-the-badge)
 
-### 🌀 Esoteric & Niche Languages
+
 ![Brainfuck](https://img.shields.io/badge/Brainfuck-2F2E2C?style=for-the-badge)
 ![Smalltalk](https://img.shields.io/badge/Smalltalk-00599C?style=for-the-badge)
 ![Prolog](https://img.shields.io/badge/Prolog-740000?style=for-the-badge)
