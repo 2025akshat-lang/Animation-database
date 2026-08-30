@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eye Catching Infinite Loop</title>
+    <style>
+        /* बैकग्राउंड और लेआउट */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050510; /* गहरा डार्क बैकग्राउंड */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: sans-serif;
+            user-select: none;
+        }
+
+        /* एनीमेशन कंटेनर */
+        .loop-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* घूमने वाले स्क्वेयर्स (Squares) */
+        .square {
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 24px;
+            border: 4px solid transparent;
+            background-image: linear-gradient(#050510, #050510), 
+                              linear-gradient(45deg, var(--clr1), var(--clr2));
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+            opacity: 0.85;
+            mix-blend-mode: screen; /* कलर्स को आपस में शानदार तरीके से मिलाने के लिए */
+            box-shadow: 0 0 20px var(--glow);
+            animation: rotateLoop 4s linear infinite;
+            transition: transform 0.5s ease, box-shadow 0.3s;
+        }
+
+        /* हर स्क्वायर की अलग टाइमिंग और एंगल */
+        .square:nth-child(1) {
+            --clr1: #00f2fe; --clr2: #4facfe; --glow: rgba(0, 242, 254, 0.4);
+            animation-delay: 0s;
+        }
+        .square:nth-child(2) {
+            --clr1: #ff007f; --clr2: #ff758c; --glow: rgba(255, 0, 127, 0.4);
+            animation-delay: -1s;
+        }
+        .square:nth-child(3) {
+            --clr1: #00ff87; --clr2: #60efff; --glow: rgba(0, 255, 135, 0.4);
+            animation-delay: -2s;
+        }
+        .square:nth-child(4) {
+            --clr1: #f9d423; --clr2: #ff4e50; --glow: rgba(249, 212, 35, 0.4);
+            animation-delay: -3s;
+        }
+
+        /* इनफिनिट रोटेशन एनीमेशन */
+        @keyframes rotateLoop {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.15); /* बीच में थोड़ा बड़ा होगा */
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        /* क्लिक करने पर इफ़ेक्ट (Active State) */
+        .loop-container:active .square {
+            box-shadow: 0 0 50px var(--clr1);
+            transform: scale(0.8) rotate(720deg);
+        }
+
+        /* नीचे छोटा सा निर्देश */
+        .hint {
+            position: absolute;
+            bottom: 40px;
+            color: #777;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- मेन एनीमेशन बोर्ड -->
+    <div class="loop-container" id="loopBoard">
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+    </div>
+
+    <div class="hint">Magic देखने के लिए सेंटर में Click करें 👇</div>
+
+    <script>
+        const board = document.getElementById('loopBoard');
+        const squares = document.querySelectorAll('.square');
+
+        // क्लिक करने पर रैंडम नए प्रीमियम नियॉन कलर्स सेट करने के लिए
+        const colorPalettes = [
+            { c1: '#00f2fe', c2: '#4facfe', g: 'rgba(0,242,254,0.6)' },
+            { c1: '#ff007f', c2: '#ff758c', g: 'rgba(255,0,127,0.6)' },
+            { c1: '#00ff87', c2: '#60efff', g: 'rgba(0,255,135,0.6)' },
+            { c1: '#f9d423', c2: '#ff4e50', g: 'rgba(249,212,35,0.6)' },
+            { c1: '#b124ff', c2: '#ff2497', g: 'rgba(177,36,255,0.6)' },
+            { c1: '#00ffff', c2: '#7928ca', g: 'rgba(0,255,255,0.6)' }
+        ];
+
+        board.addEventListener('click', () => {
+            // हर स्क्वायर का कलर हर क्लिक पर रैंडम बदल जाएगा
+            squares.forEach(sq => {
+                const randomColors = colorPalettes[Math.floor(Math.random() * colorPalettes.length)];
+                sq.style.setProperty('--clr1', randomColors.c1);
+                sq.style.setProperty('--clr2', randomColors.c2);
+                sq.style.setProperty('--glow', randomColors.g);
+            });
+        });
+    </script>
+
+</body>
+</html>

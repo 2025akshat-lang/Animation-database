@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body { background-color: black; color: white; font-family: sans-serif; }
+      .main-heading { background-color: rgb(201,192,233); padding: 25px; font-size: 30px; border-radius: 25px; cursor: pointer; border: none; width: 100%; text-align: left; }
+      .cat-btn { font-size: 25px; padding: 15px; border-radius: 25px;
+      margin: 5px 0px 0px 0; cursor: pointer; border: none; }
+      .exp-btn { font-size: 18px; padding: 10px; border-radius: 15px; cursor: pointer; margin-bottom: 10px; }
+      .data-box { font-size: 20px; padding: 15px; background-color: white;
+      border-radius: 10px; margin-top: 10px; color:black;}
+      .active-cat, .active-btn { background-color:rgb(146,180,240); color: black; }
+    .biochemsecbtn{background-color:white;border-radius:25px;margin:10px;padding:25px;}
+    </style> 
+  </head>
+  <body>
+
+  <!-- MAIN ACCORDION BUTTON -->
+  <button class="main-heading">
+    📂 Other practicals
+  </button>
+
+  <div class="category-container" style="display: none;">
+    <!-- CATEGORY SELECTION BUTTONS -->
+    <button class="cat-btn" onclick="switchCategory(event,
+    'axat1')">
+      Biochemistry</button>
+    <button class="cat-btn" onclick="switchCategory(event, 'axat2')">Physics</button>
+        <button class="cat-btn" onclick="switchCategory(event,
+        'axat3')">electronics</button>
+    
+    
+    <!-- AXAT1 SECTION -->
+    <div id="axat1" class="category-section" style="display: none;">
+      <div class="biochemsecbtn">
+        <button class="exp-btn" onclick="openExp(event,
+        'biochem1')">sterlization</button>
+        <button class="exp-btn" onclick="openExp(event,
+        'biochem2')">LB media</button>
+        <button class="exp-btn" onclick="openExp(event,
+        'biochem3')">DNA isolation</button>
+        <button class="exp-btn" onclick="openExp(event,
+        'biochem4')">transformation efficiency</button>
+        <button class="exp-btn" onclick="openExp(event,
+        'biochem5')">Restriction Digestion</button>
+        
+        
+      </div>
+      <div id="biochem1" class="data-box" style="display: none;">
+        
+        <h1 style="margin-bottom:0">
+            Aim:
+          </h1>
+          <p>packing and sterilization of glass and plastic wares</p>
+          <div style="margin:0"><h2>
+            Autoclave
+          </h2>
+          <p> and autoclave is a device which works under the high pressure</p>
+          </div>
+
+          
+          <h3>
+            principle
+          </h3>
+          <p> It works on principal</p>
+          <h2>
+            Hot air oven
+          </h2>
+          <h3>working </h3>
+          <h3>construction</h3>
+ <svg width="100%" height="400px" viewBox="0 0 400 500" xmlns="http://w3.org" style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;">
+    
+    <!-- 1. BURETTE STAND (Iron Stand) -->
+    <g stroke="#555555" stroke-width="3" stroke-linecap="round">
+      <!-- Base of the Stand -->
+      <rect x="60" y="440" width="220" height="15" rx="3" fill="#333333" stroke="#222" stroke-width="1" />
+      <!-- Vertical Iron Rod -->
+      <line x1="120" y1="40" x2="120" y2="440" stroke="#444" stroke-width="6" />
+      
+      <!-- Burette Clamp/Holder attached to Rod -->
+      <path d="M 120 180 L 190 180 M 180 165 L 180 195" stroke="#666" stroke-width="4" fill="none" />
+      <!-- Clamp Gripper around Burette -->
+      <rect x="185" y="165" width="10" height="30" fill="#888" stroke="#555" stroke-width="1" />
+    </g>
+
+    <!-- 2. THE BURETTE (Filled with Solution) -->
+    <g>
+      <!-- Burette Glass Body Outer Outline -->
+      <rect x="185" y="50" width="10" height="230" fill="none" stroke="#0066cc" stroke-width="1.5" opacity="0.7" />
+      <!-- Chemical Solution inside Burette (Light Blue) -->
+      <rect x="186" y="80" width="8" height="200" fill="#e6f2ff" opacity="0.9" />
+      
+      <!-- Burette Graduations / Markings (Lines) -->
+      <g stroke="#0066cc" stroke-width="1" opacity="0.6">
+        <line x1="185" y1="90" x2="191" y2="90" />
+        <line x1="185" y1="110" x2="191" y2="110" />
+        <line x1="185" y1="130" x2="191" y2="130" />
+        <line x1="185" y1="150" x2="191" y2="150" />
+        <line x1="185" y1="170" x2="191" y2="170" />
+        <line x1="185" y1="190" x2="191" y2="190" />
+        <line x1="185" y1="210" x2="191" y2="210" />
+        <line x1="185" y1="230" x2="191" y2="230" />
+        <line x1="185" y1="250" x2="191" y2="250" />
+        <line x1="185" y1="270" x2="191" y2="270" />
+      </g>
+
+      <!-- Burette Stopcock / Valve (Tap) -->
+      <rect x="182" y="280" width="16" height="12" fill="#ff3333" stroke="#cc0000" stroke-width="1" rx="2" />
+      <!-- Valve Handle -->
+      <line x1="190" y1="286" x2="205" y2="286" stroke="#cc0000" stroke-width="4" stroke-linecap="round" />
+      
+      <!-- Burette Jet Tip (Bottom Narrow Part) -->
+      <polygon points="186,292 194,292 191,320 189,320" fill="#e6f2ff" stroke="#0066cc" stroke-width="1" />
+    </g>
+
+    <!-- 3. DROP BY DROP SOLUTION (Falling Liquid Drops) -->
+    <g fill="#0066cc" opacity="0.8">
+      <!-- Drop 1 (Just left the tip) -->
+      <path d="M 190 330 C 188 334, 192 334, 190 330 Z" stroke="#0066cc" stroke-width="2" />
+      <!-- Drop 2 (In mid-air) -->
+      <circle cx="190" cy="355" r="2.5" />
+      <!-- Drop 3 (About to hit the solution surface) -->
+      <circle cx="190" cy="380" r="2.5" />
+    </g>
+
+    <!-- 4. CONICAL FLASK (With Conical Solution) -->
+    <g>
+      <!-- Flask Liquid/Solution at Bottom (Pink Indicator Color) -->
+      <polygon points="144,428 236,428 210,390 170,390" fill="#ffb3d9" opacity="0.8" />
+      
+      <!-- Flask Glass Outline -->
+      <!-- Neck -->
+      <line x1="175" y1="345" x2="205" y2="345" stroke="#444" stroke-width="1.5" /> <!-- Rim -->
+      <line x1="175" y1="345" x2="175" y2="375" stroke="#444" stroke-width="1.5" />
+      <line x1="205" y1="345" x2="205" y2="375" stroke="#444" stroke-width="1.5" />
+      <!-- Conical Body Slant -->
+      <line x1="175" y1="375" x2="140" y2="430" stroke="#444" stroke-width="1.5" />
+      <line x1="205" y1="375" x2="240" y2="430" stroke="#444" stroke-width="1.5" />
+      <!-- Flat Bottom -->
+      <line x1="140" y1="430" x2="240" y2="430" stroke="#444" stroke-width="2" />
+    </g>
+
+    <!-- 5. TEXT LABELS & POINTERS -->
+    <g fill="#333333">
+      <!-- Burette Label -->
+      <text x="215" y="100">Burette(Naoh)</text>
+      <path d="M 210 96 L 198 96" stroke="#333" stroke-width="0.7" fill="none" />
+
+      <!-- Clamp Label -->
+      <text x="215" y="184">Burette Clamp</text>
+      
+      <!-- Stopcock Label -->
+      <text x="220" y="288">Stopcock (Tap)</text>
+      
+      <!-- Drops Label -->
+      <text x="220" y="358" fill="#0066cc">Dropwise addition</text>
+      
+      <!-- Conical Flask Label -->
+      <text x="250" y="415">Conical Flask(</text>
+      <text x="265" y="430">•oxalic acid+Phenolphthalein</text>
+      <text x="280" y="445">water sample+</text>
+      <text x="300" y="460">methyl orange)</text>
+      <path d="M 245 412 L 215 412" stroke="#333" stroke-width="0.7" fill="none" />
+    </g>
+
+  </svg>
+      </div>
+      <div id="biochem2" class="data-box" style="display: none;">
+        Aim:LB media wala content
+      </div>
+      <div id="biochem3" class="data-box" style="display: none;">
+        Aim:DNA
+      </div>
+      <div id="biochem4" class="data-box" style="display: none;">
+        Aim:Question karo chakachak
+      </div>
+      <div id="biochem5" class="data-box" style="display: none;">
+        Aim:lambda becterio
+      </div>
+    </div>
+
+    <!-- AXAT2 SECTION -->
+    <div id="axat2" class="category-section" style="display: none;">
+      <div class="biochemsecbtn">
+        <button class="exp-btn" onclick="openExp(event, 'physic1')">thermal physics</button>
+        <button class="exp-btn" onclick="openExp(event, 'physic2')">Mechanics</button>
+        <button class="exp-btn" onclick="openExp(event, 'physic3')">Electricity</button>
+        
+        
+      </div>
+  <!--yahaan section khatam ho rhaa hai please apne man se koi division close na
+  karee apki tudae ho sakti hai-->
+      <div id="physic1" class="data-box" style="display: none;">
+        Thermal physics wala content
+      </div>
+      <div id="physic2" class="data-box" style="display: none;">Mechanics wala
+      content dalo
+      </div>
+      <div id="physic3" class="data-box" style="display: none;">
+        Electricity wala content dalo
+      </div>
+    </div>
+    <div>
+      
+    </div>
+    
+  </div>
+
+  <script>
+    // Main Accordion Toggle
+    var coll = document.querySelector(".main-heading");
+    if(coll){
+      coll.addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        content.style.display = (content.style.display === "none" || content.style.display === "") ? "block" : "none";
+      });
+    }
+
+    // Category Switcher Function
+    function switchCategory(evt, catId) {
+      var i, sections, catBtns;
+      
+      // 1. Saare category sections hide karo
+      sections = document.querySelectorAll(".category-section");
+      for (i = 0; i < sections.length; i++) {
+        sections[i].style.display = "none";
+      }
+      
+      catBtns = document.querySelectorAll(".cat-btn");
+      for (i = 0; i < catBtns.length; i++) {
+        catBtns[i].classList.remove("active-cat");
+      }
+
+      // 2. Target category show karo
+      var activeSec = document.getElementById(catId);
+      if (activeSec) {
+        activeSec.style.display = "block";
+      }
+      
+      if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add("active-cat");
+      }
+
+      // 3. Pehle sub-button ko auto click karo
+      if (activeSec) {
+        var firstExpBtn = activeSec.querySelector(".exp-btn");
+        if (firstExpBtn) {
+          firstExpBtn.click();
+        }
+      }
+    }
+
+    // Experiment Switcher Function
+    function openExp(evt, expId) {
+      var i, dataBox, expBtn;
+      var currentCat = evt.currentTarget.closest('.category-section');
+      
+      if (!currentCat) return;
+
+      // Category-specific content hide & active style clear
+      dataBox = currentCat.querySelectorAll(".data-box");
+      for (i = 0; i < dataBox.length; i++) { 
+        dataBox[i].style.display = "none"; 
+      }
+      
+      expBtn = currentCat.querySelectorAll(".exp-btn");
+      for (i = 0; i < expBtn.length; i++) { 
+        expBtn[i].classList.remove("active-btn"); 
+      }
+      
+      // Target experiment show karo
+      var targetExp = document.getElementById(expId);
+      if (targetExp) {
+        targetExp.style.display = "block";
+      }
+      
+      evt.currentTarget.classList.add("active-btn");
+    }
+  </script>
+  </body>
+</html>

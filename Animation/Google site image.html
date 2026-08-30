@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashcards & Science Kits Gallery</title>
+<style>
+  * {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  body {
+    margin: 0;
+    padding: 20px;
+    background-color: white;
+    color: #fff;
+  }
+
+  .albums-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .behance-card {
+    background: #111;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .behance-card:hover { transform: translateY(-6px); }
+  .img-wrapper { width: 100%; height: 220px; background: #222; }
+  .img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+  .card-info { padding: 16px; }
+  .card-title { font-size: 15px; font-weight: 600; margin: 0 0 8px 0; color: #fff; }
+  .card-meta { font-size: 12px; color: #aaa; display: flex; justify-content: space-between; }
+  .badge { background: rgba(255, 255, 255, 0.12); padding: 3px 8px; border-radius: 4px; }
+
+  /* EXPANDED GALLERY VIEW */
+  .gallery-view {
+    display: none;
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    background: #0d0d0d;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+    animation: fadeIn 0.4s ease-in-out;
+    color: white;
+    overflow: hidden;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .gallery-header {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .back-btn {
+    background: #000;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 9px 18px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .gallery-title { font-size: 18px; font-weight: 700; color: #fff; margin: 0; }
+
+  .gallery-stream {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .gallery-stream img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  }
+
+  /* FIRE THEME */
+  .modal-fire-bg {
+    display: none;
+    position: absolute;
+    top: 0; right: 0; width: 100%; height: 200px;
+    pointer-events: none; z-index: 1;
+  }
+  .gallery-view.fire-active .modal-fire-bg { display: block; }
+  .modal-glow-fire {
+    position: absolute; top: -20px; right: 10px; width: 180px; height: 180px;
+    border-radius: 50%; background: rgba(255, 69, 0, 0.35); filter: blur(40px);
+  }
+  .modal-flame-wrapper { position: absolute; top: 15px; right: 30px; width: 60px; height: 100px; }
+  .flame-layer { position: absolute; bottom: 0; left: 50%; border-radius: 50% 50% 35% 35% / 60% 60% 40% 40%; transform-origin: center bottom; }
+  .flame-main { width: 50px; height: 75px; margin-left: -25px; background: linear-gradient(to top, #ff2200, #ff6600, #ffae00, transparent); filter: blur(1px); animation: real-flicker 0.15s infinite alternate; }
+  .flame-mid { width: 32px; height: 50px; margin-left: -16px; bottom: 3px; background: linear-gradient(to top, #ff7700, #ffcc00, #ffffaa); filter: blur(0.5px); animation: real-flicker 0.10s infinite alternate; }
+  .flame-core { width: 16px; height: 30px; margin-left: -8px; bottom: 5px; background: linear-gradient(to top, #ffddaa, #ffffff); }
+
+  @keyframes real-flicker {
+    0% { opacity: 0.85; transform: scaleY(0.98); }
+    100% { opacity: 1; transform: scaleY(1.04); }
+  }
+
+  /* ==========================================
+     SCIENCE KIT THEME (FLOATING LAB APPARATUS)
+     ========================================== */
+  .modal-science-bg {
+    display: none;
+    position: absolute;
+    top: 0; right: 0; width: 100%; height: 200px;
+    pointer-events: none; z-index: 1;
+  }
+  .gallery-view.science-active .modal-science-bg { display: block; }
+
+  .modal-glow-science {
+    position: absolute; top: -20px; right: 10px; width: 220px; height: 200px;
+    border-radius: 50%; background: rgba(0, 255, 200, 0.25); filter: blur(50px);
+    animation: pulse-lab 3s infinite alternate ease-in-out;
+  }
+
+  .lab-items-wrapper {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    width: 120px;
+    height: 140px;
+  }
+
+  /* SVG Icons with Glowing Neon Effect */
+  .lab-icon {
+    position: absolute;
+    bottom: -10px;
+    filter: drop-shadow(0 0 12px rgba(0, 255, 200, 0.8));
+    opacity: 0;
+    animation: float-up 3.5s infinite linear;
+  }
+
+  /* Conical Flask */
+  .icon-flask {
+    left: 10px;
+    width: 32px;
+    animation-duration: 3.2s;
+    animation-delay: 0s;
+  }
+
+  /* Test Tube */
+  .icon-testtube {
+    left: 55px;
+    width: 24px;
+    animation-duration: 4s;
+    animation-delay: 1.2s;
+  }
+
+  /* Beaker */
+  .icon-beaker {
+    left: 85px;
+    width: 28px;
+    animation-duration: 3.6s;
+    animation-delay: 0.6s;
+  }
+
+  /* Floating Chemical Drop */
+  .icon-drop {
+    left: 40px;
+    width: 14px;
+    animation-duration: 2.5s;
+    animation-delay: 1.8s;
+  }
+
+  @keyframes float-up {
+    0% {
+      transform: translateY(0) rotate(-10deg) scale(0.7);
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.9;
+    }
+    80% {
+      opacity: 0.9;
+    }
+    100% {
+      transform: translateY(-120px) rotate(15deg) scale(1.1);
+      opacity: 0;
+    }
+  }
+
+  @keyframes pulse-lab {
+    0% { transform: scale(0.9); opacity: 0.5; }
+    100% { transform: scale(1.25); opacity: 0.8; }
+  }
+</style>
+</head>
+<body>
+
+  <div id="albumsGrid" class="albums-grid"></div>
+
+  <div id="galleryView" class="gallery-view">
+    
+    <!-- BACKGROUND FIRE LAYER -->
+    <div class="modal-fire-bg">
+      <div class="modal-glow-fire"></div>
+      <div class="modal-flame-wrapper">
+        <div class="flame-layer flame-main"></div>
+        <div class="flame-layer flame-mid"></div>
+        <div class="flame-layer flame-core"></div>
+      </div>
+    </div>
+
+    <!-- BACKGROUND SCIENCE KIT LAYER (FLOATING LAB APPARATUS) -->
+    <div class="modal-science-bg">
+      <div class="modal-glow-science"></div>
+      <div class="lab-items-wrapper">
+        
+        <!-- Conical Flask SVG -->
+        <svg class="lab-icon icon-flask" viewBox="0 0 24 24" fill="none" stroke="#00ffcc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 2v5.5L4.1 17.3A2 2 0 0 0 5.8 20h12.4a2 2 0 0 0 1.7-2.7L14 7.5V2"/>
+          <line x1="8" y1="2" x2="16" y2="2"/>
+          <path d="M6.5 15h11" stroke="#00e5ff" stroke-width="2"/>
+        </svg>
+
+        <!-- Test Tube SVG -->
+        <svg class="lab-icon icon-testtube" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.5 2v17.5a2.5 2.5 0 0 1-5 0V2"/>
+          <line x1="8.5" y1="2" x2="15.5" y2="2"/>
+          <path d="M9.5 12h5" stroke="#00ff88" stroke-width="2"/>
+        </svg>
+
+        <!-- Beaker SVG -->
+        <svg class="lab-icon icon-beaker" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4.5 3h15v15a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3V3z"/>
+          <line x1="4.5" y1="3" x2="19.5" y2="3"/>
+          <line x1="6" y1="9" x2="10" y2="9"/>
+          <line x1="6" y1="13" x2="12" y2="13"/>
+        </svg>
+
+        <!-- Chemical Drop SVG -->
+        <svg class="lab-icon icon-drop" viewBox="0 0 24 24" fill="#00ffcc" stroke="#00ffcc" stroke-width="1">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+        </svg>
+
+      </div>
+    </div>
+
+    <div class="gallery-header">
+      <button class="back-btn" onclick="closeGallery()">← Back to Overview</button>
+      <div id="galleryTitle" class="gallery-title">Project Details</div>
+    </div>
+    <div id="galleryStream" class="gallery-stream"></div>
+  </div>
+
+<script>
+  const albumsData = [
+    {
+      id: 1,
+      title: "Interactive Science Kit & Charts",
+      author: "Akshat Raj",
+      theme: "science",
+      thumbnail: "https://i.postimg.cc/FsGySyZh/20260804-131229.jpg",
+      images: [
+        "https://i.postimg.cc/FsGySyZh/20260804-131229.jpg",
+        "https://i.postimg.cc/wvLqKkvY/20260804-131234.jpg",
+        "https://i.postimg.cc/9MZm3BMj/20260804-131249.jpg",
+        "https://i.postimg.cc/nzBF81zx/20260804-131352.jpg"
+      ]
+    },
+    {
+      id: 2,
+      title: "Types of combustion A3 flash card",
+      author: "Akshat Raj",
+      theme: "fire",
+      thumbnail: "https://i.postimg.cc/T3kb4TLP/20260804-131206.jpg",
+      images: [
+        "https://i.postimg.cc/T3kb4TLP/20260804-131206.jpg"
+      ]
+    }
+  ];
+
+  function renderAlbums() {
+    const grid = document.getElementById('albumsGrid');
+    grid.innerHTML = '';
+
+    albumsData.forEach(album => {
+      const cardHtml = `
+        <div class="behance-card" onclick="openGallery(${album.id})">
+          <div class="img-wrapper">
+            <img src="${album.thumbnail}" alt="${album.title}">
+          </div>
+          <div class="card-info">
+            <div class="card-title">${album.title}</div>
+            <div class="card-meta">
+              <span>${album.author}</span>
+              <span class="badge">${album.images.length} Photos</span>
+            </div>
+          </div>
+        </div>
+      `;
+      grid.innerHTML += cardHtml;
+    });
+  }
+
+  function openGallery(albumId) {
+    const album = albumsData.find(a => a.id === albumId);
+    if (!album) return;
+
+    const galleryModal = document.getElementById('galleryView');
+    document.getElementById('galleryTitle').innerText = album.title;
+
+    const stream = document.getElementById('galleryStream');
+    stream.innerHTML = album.images.map(imgUrl => 
+      `<img src="${imgUrl}" loading="lazy" alt="${album.title}">`
+    ).join('');
+
+    galleryModal.classList.remove('fire-active', 'science-active');
+
+    if (album.theme === 'fire') {
+      galleryModal.classList.add('fire-active');
+    } else if (album.theme === 'science') {
+      galleryModal.classList.add('science-active');
+    }
+
+    document.getElementById('albumsGrid').style.display = 'none';
+    galleryModal.style.display = 'block';
+  }
+
+  function closeGallery() {
+    const galleryModal = document.getElementById('galleryView');
+    galleryModal.style.display = 'none';
+    galleryModal.classList.remove('fire-active', 'science-active');
+    document.getElementById('albumsGrid').style.display = 'grid';
+  }
+
+  renderAlbums();
+</script>
+
+</body>
+</html>
