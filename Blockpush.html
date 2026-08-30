@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Force and Motion - Boy & Girl Pushing Box</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #0f172a;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        h1 {
+            margin-top: 8px;
+            font-size: 1.4rem;
+            color: #facc15;
+            text-align: center;
+        }
+        p {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        canvas {
+            background: #1e293b;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            max-width: 95vw;
+            max-height: 60vh;
+        }
+        .status-badge {
+            background: #334155;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            color: #38bdf8;
+            font-weight: bold;
+        }
+        .controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            background: #1e293b;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        button {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        button.sound-btn {
+            background: #22c55e;
+            color: #000;
+        }
+        button.sound-btn.off {
+            background: #ef4444;
+            color: #fff;
+        }
+        label {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: bold;
+        }
+        input[type=range] {
+            cursor: pointer;
+            accent-color: #facc15;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📦 . 🏋️️</h1>
+        
+        <div id="statusBadge" class="status-badge">.</div>
+
+        <canvas id="boxCanvas" width="600" height="380"></canvas>
+
+        <div class="controls">
+            <button id="playBtn">⏸️ Pause</button>
+            <button id="soundBtn" class="sound-btn off">🔊 Heavy Push Sound</button>
+            <label>
+                ⚡ Speed:
+                <input type="range" id="speedSlider" min="0.2" max="2.5" step="0.1" value="1">
+            </label>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('boxCanvas');
+        const ctx = canvas.getContext('2d');
+        const statusBadge = document.getElementById('statusBadge');
+
+        let isPlaying = true;
+        let animationTime = 0;
+        let pushSpeedMultiplier = 1.0;
+        let boxX = 260;
+        const groundY = 300;
+        const boxSize = 130; // Bigger Box
+
+        // States: 0 = Pushing, 1 = Tired/Resting
+        let currentState = 0; 
+        let stateTimer = 0;
+
+        // Sound Synthesis Setup
+        let audioCtx = null;
+        let isAudioPlaying = false;
+        let soundInterval = null;
+
+        const playBtn = document.getElementById('playBtn');
+        const soundBtn = document.getElementById('soundBtn');
+        const speedSlider = document.getElementById('speedSlider');
+
+        speedSlider.addEventListener('input', (e) => {
+            pushSpeedMultiplier = parseFloat(e.target.value);
+        });
+
+        playBtn.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            playBtn.innerText = isPlaying ? "⏸️ Pause" : "▶️ Play";
+        });
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playHeavyPushSound() {
+            soundInterval = setInterval(() => {
+                if (!isAudioPlaying || !audioCtx || !isPlaying) return;
+
+                let now = audioCtx.currentTime;
+
+                if (currentState === 0) {
+                    let bufferSize = audioCtx.sampleRate * 0.15;
+                    let buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                    let output = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        output[i] = Math.random() * 2 - 1;
+                    }
+                    let noise = audioCtx.createBufferSource();
+                    noise.buffer = buffer;
+
+                    let filter = audioCtx.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(300, now);
+
+                    let gain = audioCtx.createGain();
+                    gain.gain.setValueAtTime(0.28, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.14);
+
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    noise.start(now);
+                } else {
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(180, now);
+                    osc.frequency.exponentialRampToValueAtTime(100, now + 0.2);
+
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.21);
+                }
+            }, 400 / pushSpeedMultiplier);
+        }
+
+        soundBtn.addEventListener('click', () => {
+            initAudio();
+            isAudioPlaying = !isAudioPlaying;
+
+            if (isAudioPlaying) {
+                soundBtn.innerText = "🔇 Stop Sound";
+                soundBtn.classList.remove('off');
+                playHeavyPushSound();
+            } else {
+                soundBtn.innerText = "🔊 Heavy Push Sound";
+                soundBtn.classList.add('off');
+                if (soundInterval) clearInterval(soundInterval);
+            }
+        });
+
+        function drawBackground() {
+            let bgGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            bgGrad.addColorStop(0, '#1e293b');
+            bgGrad.addColorStop(0.7, '#334155');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Floor
+            ctx.fillStyle = '#475569';
+            ctx.fillRect(0, groundY, canvas.width, canvas.height - groundY);
+
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(0, groundY);
+            ctx.lineTo(canvas.width, groundY);
+            ctx.stroke();
+        }
+
+        function drawBox(x, y) {
+            // Shadow
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+            ctx.fillRect(x + 5, groundY - 6, boxSize, 12);
+
+            // Box Body
+            ctx.fillStyle = '#78350f';
+            ctx.fillRect(x, y, boxSize, boxSize);
+
+            // Box Borders
+            ctx.strokeStyle = '#451a03';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(x, y, boxSize, boxSize);
+
+            // Cross Straps
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + boxSize, y + boxSize);
+            ctx.moveTo(x + boxSize, y);
+            ctx.lineTo(x, y + boxSize);
+            ctx.stroke();
+        }
+
+        // --- ENLARGED & HIGH VISIBILITY BOY ---
+        function drawBoy(x, isTired) {
+            ctx.save();
+            ctx.translate(x, groundY);
+
+            if (!isTired) {
+                let pushLegOffset = Math.sin(animationTime * 6) * 12;
+
+                // Legs
+                ctx.strokeStyle = '#b45309';
+                ctx.lineWidth = 12;
+                ctx.beginPath();
+                ctx.moveTo(-15, -50);
+                ctx.lineTo(-35 - pushLegOffset, 0);
+                ctx.moveTo(-8, -50);
+                ctx.lineTo(15 + pushLegOffset, 0);
+                ctx.stroke();
+
+                // Torso Leaning Forward
+                ctx.save();
+                ctx.rotate(0.35);
+                ctx.fillStyle = '#dc2626'; // Red Shirt
+                ctx.fillRect(-18, -75, 34, 55);
+
+                // Head
+                ctx.fillStyle = '#fde047';
+                ctx.beginPath();
+                ctx.arc(0, -90, 16, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Hair
+                ctx.fillStyle = '#1c1917';
+                ctx.beginPath();
+                ctx.arc(-3, -95, 17, Math.PI * 0.7, Math.PI * 2.2);
+                ctx.fill();
+
+                // Arms Pushing Box
+                ctx.strokeStyle = '#dc2626';
+                ctx.lineWidth = 11;
+                ctx.beginPath();
+                ctx.moveTo(8, -62);
+                ctx.lineTo(42, -62);
+                ctx.stroke();
+                ctx.restore();
+
+            } else {
+                // Sitting Tired
+                ctx.strokeStyle = '#b45309';
+                ctx.lineWidth = 12;
+                ctx.beginPath();
+                ctx.moveTo(-8, -38);
+                ctx.lineTo(-32, -8);
+                ctx.lineTo(-8, 0);
+                ctx.stroke();
+
+                ctx.fillStyle = '#dc2626';
+                ctx.fillRect(-18, -58, 30, 45);
+
+                ctx.fillStyle = '#fde047';
+                ctx.beginPath();
+                ctx.arc(0, -74, 16, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#1c1917';
+                ctx.beginPath();
+                ctx.arc(-3, -78, 16, Math.PI * 0.7, Math.PI * 2.2);
+                ctx.fill();
+
+                ctx.strokeStyle = '#fde047';
+                ctx.lineWidth = 8;
+                ctx.beginPath();
+                ctx.moveTo(-8, -48);
+                ctx.lineTo(-28, -20);
+                ctx.stroke();
+
+                // Big Sweat Drops 💦
+                ctx.fillStyle = '#38bdf8';
+                let sweatY = (animationTime * 20) % 20;
+                ctx.beginPath();
+                ctx.arc(12, -80 + sweatY, 4, 0, Math.PI * 2);
+                ctx.arc(-14, -75 + sweatY, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            ctx.restore();
+        }
+
+        // --- ENLARGED & HIGH VISIBILITY GIRL ---
+        function drawGirl(x, isTired) {
+            ctx.save();
+            ctx.translate(x, groundY);
+
+            if (!isTired) {
+                let pushLegOffset = Math.sin(animationTime * 6 + Math.PI) * 12;
+
+                // Legs
+                ctx.strokeStyle = '#1e3a8a';
+                ctx.lineWidth = 12;
+                ctx.beginPath();
+                ctx.moveTo(-15, -50);
+                ctx.lineTo(-35 - pushLegOffset, 0);
+                ctx.moveTo(-8, -50);
+                ctx.lineTo(15 + pushLegOffset, 0);
+                ctx.stroke();
+
+                // Torso
+                ctx.save();
+                ctx.rotate(0.35);
+                ctx.fillStyle = '#2563eb'; // Blue Dress
+                ctx.fillRect(-16, -72, 32, 52);
+
+                // Head
+                ctx.fillStyle = '#fde047';
+                ctx.beginPath();
+                ctx.arc(0, -88, 15, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Ponytail Hair
+                ctx.fillStyle = '#7c2d12';
+                ctx.beginPath();
+                ctx.arc(-4, -92, 16, Math.PI * 0.6, Math.PI * 2.3);
+                ctx.fill();
+                ctx.fillRect(-24, -94, 15, 9); // Long Ponytail
+
+                // Arms Pushing Box
+                ctx.strokeStyle = '#2563eb';
+                ctx.lineWidth = 11;
+                ctx.beginPath();
+                ctx.moveTo(8, -60);
+                ctx.lineTo(42, -60);
+                ctx.stroke();
+                ctx.restore();
+
+            } else {
+                // Sitting Tired
+                ctx.strokeStyle = '#1e3a8a';
+                ctx.lineWidth = 12;
+                ctx.beginPath();
+                ctx.moveTo(-8, -35);
+                ctx.lineTo(-30, -8);
+                ctx.lineTo(-4, 0);
+                ctx.stroke();
+
+                ctx.fillStyle = '#2563eb';
+                ctx.fillRect(-16, -54, 28, 42);
+
+                ctx.fillStyle = '#fde047';
+                ctx.beginPath();
+                ctx.arc(-3, -68, 15, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#7c2d12';
+                ctx.beginPath();
+                ctx.arc(-6, -72, 15, Math.PI * 0.6, Math.PI * 2.3);
+                ctx.fill();
+
+                ctx.strokeStyle = '#fde047';
+                ctx.lineWidth = 8;
+                ctx.beginPath();
+                ctx.moveTo(-6, -42);
+                ctx.lineTo(-24, -16);
+                ctx.stroke();
+
+                // Big Sweat Drops 💦
+                ctx.fillStyle = '#38bdf8';
+                let sweatY = (animationTime * 20) % 20;
+                ctx.beginPath();
+                ctx.arc(10, -72 + sweatY, 4, 0, Math.PI * 2);
+                ctx.arc(-18, -66 + sweatY, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            ctx.restore();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawBackground();
+
+            if (isPlaying) {
+                animationTime += 0.04 * pushSpeedMultiplier;
+                stateTimer += 1 * pushSpeedMultiplier;
+
+                if (currentState === 0) { // Pushing
+                    boxX += 1.4 * pushSpeedMultiplier;
+                    if (stateTimer > 180) {
+                        currentState = 1; // Tired
+                        stateTimer = 0;
+                        
+                        statusBadge.style.color = "#ef4444";
+                    }
+                } else if (currentState === 1) { // Resting
+                    if (stateTimer > 140) {
+                        currentState = 0; // Resume
+                        stateTimer = 0;
+                        
+                        statusBadge.style.color = "#38bdf8";
+                    }
+                }
+
+                if (boxX > canvas.width - 150) {
+                    boxX = 220;
+                }
+            }
+
+            // Draw Box
+            drawBox(boxX, groundY - boxSize);
+
+            // Draw Larger Characters
+            if (currentState === 0) {
+                drawGirl(boxX - 35, false);
+                drawBoy(boxX - 95, false);
+            } else {
+                drawGirl(boxX - 35, true);
+                drawBoy(boxX - 88, true);
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyper Neon Shockwave</title>
+    <style>
+        /* एकदम ब्लैक बैकग्राउंड ताकि कलर्स आँख में चुभें */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial Black', Impact, sans-serif;
+            user-select: none;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+
+        /* तड़कता-भड़कता फ्लैशिंग टेक्स्ट */
+        .neon-title {
+            position: absolute;
+            top: 10%;
+            text-align: center;
+            color: #fff;
+            font-size: 32px;
+            letter-spacing: 5px;
+            z-index: 10;
+            pointer-events: none;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #ff0055, 0 0 30px #ff0055, 0 0 50px #ff0055;
+            animation: flash 0.4s infinite alternate;
+        }
+
+        @keyframes flash {
+            0% { opacity: 0.3; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="neon-title">🔥 HYPER PULSE 🔥</div>
+    <canvas id="fireCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('fireCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        let hue = 0;
+        const sparks = [];
+        const pointer = { x: null, y: null, active: false };
+
+        // स्पार्क/बिजली कड़कने का लॉजिक
+        class Spark {
+            constructor(x, y, isClick) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 8 + 4;
+                this.speedX = Math.random() * 15 - 7.5;
+                this.speedY = Math.random() * 15 - 7.5;
+                // तड़कते-भड़कते सतरंगी रंग (Rainbow Spectrum)
+                this.color = `hsl(${hue}, 100%, 50%)`;
+                this.life = 1;
+                this.decay = Math.random() * 0.03 + 0.02;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.speedY += 0.2; // ग्रेविटी इफ़ेक्ट ताकि नीचे गिरें
+                this.life -= this.decay;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.life;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                
+                // अंधाधुंध ग्लो इफ़ेक्ट
+                ctx.shadowBlur = 30;
+                ctx.shadowColor = this.color;
+                
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        let frame = 0;
+
+        function animate() {
+            // पुराना फ्रेम बहुत कम मिटेगा ताकि स्क्रीन पर नियॉन का रायता/ट्रेल फैले
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // लगातार रंग बदलते रहना (Tadakta Bharkata Hue Rotation)
+            hue += 5; 
+
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            // 1. बैकग्राउंड शॉकवेव रिंग्स (Crazy Laser Rings)
+            frame++;
+            if (frame % 8 === 0) {
+                ctx.save();
+                ctx.strokeStyle = `hsl(${(hue + 180) % 360}, 100%, 50%)`;
+                ctx.lineWidth = 6;
+                ctx.shadowBlur = 40;
+                ctx.shadowColor = ctx.strokeStyle;
+                
+                ctx.beginPath();
+                // रिंग्स का साइज लगातार फैलेगा
+                let ringRadius = (frame * 3) % (canvas.width / 2);
+                ctx.arc(cx, cy, ringRadius, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // 2. जब उंगली स्क्रीन पर हो तो पागलों की तरह स्पार्क्स छोड़ना
+            if (pointer.active && pointer.x !== null) {
+                for (let i = 0; i < 3; i++) {
+                    sparks.push(new Spark(pointer.x, pointer.y, false));
+                }
+            }
+
+            // स्पार्क्स को ड्रा और अपडेट करना
+            for (let i = sparks.length - 1; i >= 0; i--) {
+                sparks[i].update();
+                sparks[i].draw();
+                if (sparks[i].life <= 0) {
+                    sparks.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // --- तड़कते-भड़कते इवेंट्स ---
+
+        function triggerExplosion(x, y) {
+            // क्लिक करने पर महा-धमाका (50 स्पार्क्स एक साथ)
+            for (let i = 0; i < 50; i++) {
+                sparks.push(new Spark(x, y, true));
+            }
+        }
+
+        // माउस कंट्रोल
+        window.addEventListener('mousedown', (e) => {
+            pointer.active = true;
+            pointer.x = e.clientX;
+            pointer.y = e.clientY;
+            triggerExplosion(e.clientX, e.clientY);
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if(pointer.active) {
+                pointer.x = e.clientX;
+                pointer.y = e.clientY;
+            }
+        });
+
+        window.addEventListener('mouseup', () => pointer.active = false);
+
+        // मोबाइल टच कंट्रोल (असली मजा फोन पर आएगा)
+        window.addEventListener('touchstart', (e) => {
+            pointer.active = true;
+            pointer.x = e.touches[0].clientX;
+            pointer.y = e.touches[0].clientY;
+            triggerExplosion(pointer.x, pointer.y);
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            pointer.x = e.touches[0].clientX;
+            pointer.y = e.touches[0].clientY;
+        });
+
+        window.addEventListener('touchend', () => pointer.active = false);
+
+        // चालू करें बवाल!
+        animate();
+    </script>
+</body>
+</html>

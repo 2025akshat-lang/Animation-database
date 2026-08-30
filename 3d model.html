@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Desi Classroom</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a252f;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; /* Screen ke bahar kuch nahi jayega */
+        }
+
+        /* Main Classroom Box */
+        #classroom {
+            width: 95vw;
+            height: 80vh;
+            max-width: 1000px;
+            max-height: 700px;
+            background: linear-gradient(180deg, #fceebb, #f8b500); /* Class wall */
+            border: 10px solid #5c3a21; /* Wooden border */
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Top Section: Window and Board */
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 55%;
+            padding: 3% 5%;
+            gap: 10px;
+        }
+
+        /* Village Window Scenery */
+        .window {
+            flex: 1;
+            height: 100%;
+            background: linear-gradient(to bottom, #87CEEB 55%, #7CFC00 45%);
+            border: 6px solid #4a2e1b;
+            border-radius: 5px;
+            position: relative;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+
+        .window::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 0; width: 100%; height: 4px; background: #4a2e1b;
+        }
+        .window::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%; width: 4px; height: 100%; background: #4a2e1b;
+        }
+
+        /* Beautiful Scenery Elements */
+        .sun {
+            position: absolute; top: 5%; right: 10%;
+            font-size: clamp(20px, 4vw, 40px);
+            animation: rotateSun 10s linear infinite;
+        }
+        .cloud {
+            position: absolute; top: 15%; left: 5%;
+            font-size: clamp(20px, 4vw, 40px);
+            animation: floatCloud 8s ease-in-out infinite alternate;
+        }
+        .tree {
+            position: absolute; bottom: 0%; left: 5%;
+            font-size: clamp(30px, 6vw, 60px);
+        }
+        .hut {
+            position: absolute; bottom: 0%; right: 5%;
+            font-size: clamp(30px, 6vw, 60px);
+        }
+
+        /* Blackboard Setup */
+        .board {
+            flex: 1.5;
+            height: 100%;
+            background-color: #1e5128;
+            border: 8px solid #8B4513;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        #board-text {
+            color: white;
+            font-size: clamp(50px, 12vw, 150px); /* Adjusts text automatically */
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            transition: 0.3s;
+        }
+
+        /* Bottom Section: Characters & Floor */
+        .bottom-section {
+            height: 45%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 0 5% 2%;
+            position: relative;
+        }
+
+        .floor {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 15%;
+            background-color: #795548;
+            z-index: 0;
+        }
+
+        /* Kids */
+        .students {
+            display: flex;
+            gap: 15px;
+            z-index: 1;
+        }
+
+        .student {
+            font-size: clamp(40px, 10vw, 80px);
+            animation: bounce 2.5s infinite alternate ease-in-out;
+        }
+        .student:nth-child(1) { animation-delay: 0s; }
+        .student:nth-child(2) { animation-delay: 0.5s; }
+        .student:nth-child(3) { animation-delay: 1s; }
+
+        /* Teacher Setup */
+        .teacher-container {
+            z-index: 1;
+            position: relative;
+        }
+
+        .teacher {
+            font-size: clamp(50px, 12vw, 100px);
+            animation: teach 2s infinite alternate ease-in-out;
+        }
+
+        /* Speech Bubble */
+        #speech-bubble {
+            position: absolute;
+            top: -40px; right: 50%;
+            background: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: clamp(14px, 4vw, 24px);
+            font-weight: bold;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        #speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px; right: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: white transparent transparent transparent;
+        }
+
+        /* Animations */
+        @keyframes rotateSun {
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes floatCloud {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(20px); }
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+        @keyframes teach {
+            0% { transform: rotate(0deg) translateY(0); }
+            100% { transform: rotate(-5deg) translateY(-10px); }
+        }
+
+        /* Play Button (Sticky Bottom) */
+        .control-panel {
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        #startBtn {
+            padding: 15px 30px;
+            font-size: clamp(16px, 4vw, 22px);
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 8px 15px rgba(255, 75, 43, 0.4);
+            transition: 0.2s;
+            z-index: 10;
+        }
+
+        #startBtn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="classroom">
+        <div class="top-section">
+            <div class="window">
+                <div class="sun">☀️</div>
+                <div class="cloud">☁️</div>
+                <div class="tree">🌳</div>
+                <div class="hut">🛖</div>
+            </div>
+            <div class="board">
+                <div id="board-text">तैयार?</div>
+            </div>
+        </div>
+
+        <div class="bottom-section">
+            <div class="floor"></div>
+            
+            <div class="students">
+                <div class="student">👧🏽</div>
+                <div class="student">👦🏻</div>
+                <div class="student">🧒🏽</div>
+            </div>
+
+            <div class="teacher-container">
+                <div id="speech-bubble">सुनो!</div>
+                <div class="teacher">👨🏽‍🏫</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="control-panel">
+        <button id="startBtn">▶️ Class Shuru Karein</button>
+    </div>
+
+   <script>
+    const vowels = ['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ'];
+    const boardText = document.getElementById('board-text');
+    const startBtn = document.getElementById('startBtn');
+    const bubble = document.getElementById('speech-bubble');
+    
+    let index = 0;
+    let isPlaying = false;
+    let currentUtterance;
+
+    // Aawaz nikalne ka naya function jisme Master/Bachcho ka farq hai
+    function speakText(text, isTeacher) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel(); 
+            currentUtterance = new SpeechSynthesisUtterance(text);
+            currentUtterance.lang = 'hi-IN';
+            
+            // Ye hai Jadoo: Master ji ki aawaz bhaari, bachcho ki patli!
+            currentUtterance.pitch = isTeacher ? 0.7 : 2.0; 
+            currentUtterance.rate = isTeacher ? 0.8 : 1.0;
+            
+            window.speechSynthesis.speak(currentUtterance);
+        }
+    }
+
+    // Master ji ka action
+    function teacherSpeaks(text, isEnd = false) {
+        boardText.innerText = text;
+        bubble.innerText = isEnd ? "छुट्टी!" : text;
+        bubble.style.opacity = '1';
+        setTimeout(() => { bubble.style.opacity = '0'; }, 1500);
+        
+        speakText(isEnd ? "आज की क्लास ख़त्म!" : text, true);
+    }
+
+    // Bachcho ka action (Ye sirf bolenge, inka bubble nahi hai)
+    function kidsSpeak(text) {
+        speakText(text, false);
+    }
+
+    // Class ka sequence
+    function playLesson() {
+        if (index < vowels.length) {
+            let currentLetter = vowels[index];
+            
+            // 1. Pehle Master ji bolenge
+            teacherSpeaks(currentLetter);
+            
+            // 2. Theek 1.5 second baad bachche wahi akshar repeat karenge
+            setTimeout(() => {
+                kidsSpeak(currentLetter);
+            }, 1500);
+
+            index++;
+            // 3. Agla akshar ab thoda aur time leke aayega (4 seconds) taaki clash na ho
+            setTimeout(playLesson, 4000); 
+        } else {
+            teacherSpeaks("शाबाश!", true);
+            startBtn.innerText = "🔄 Phir se padhein?";
+            startBtn.style.display = 'block';
+            isPlaying = false;
+        }
+    }
+
+    startBtn.addEventListener('click', () => {
+        if (isPlaying) return;
+        
+        if ('speechSynthesis' in window) {
+            try {
+                const silent = new SpeechSynthesisUtterance('');
+                window.speechSynthesis.speak(silent);
+            } catch (e) {
+                console.log("Audio issue, but text chalega!");
+            }
+        }
+
+        isPlaying = true;
+        index = 0;
+        startBtn.style.display = 'none'; 
+        
+        teacherSpeaks("ध्यान दें...");
+        
+        // Thoda pause deke class shuru karenge
+        setTimeout(playLesson, 2000);
+    });
+</script>
+
+</body>
+</html>
