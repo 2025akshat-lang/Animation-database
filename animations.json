@@ -2,205 +2,295 @@
   {
     "id": "anim_3d_model",
     "title": "3D Model",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/3d%20model.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/3d%20model.html",
     "preview": "📦"
+  },
+  {
+    "id": "anim_aajkaanimation",
+    "title": "Aajka Animation",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Aajkaanimation.html",
+    "preview": "✨"
+  },
+  {
+    "id": "anim_abcd_game",
+    "title": "ABCD Game",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Abcd%20game.html",
+    "preview": "🔤"
+  },
+  {
+    "id": "anim_birthdaycake",
+    "title": "Birthday Cake",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Birthdaycake.html",
+    "preview": "🎂"
   },
   {
     "id": "anim_blockpush",
     "title": "Blockpush",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Blockpush.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Blockpush.html",
     "preview": "🧱"
+  },
+  {
+    "id": "anim_bottle_animation",
+    "title": "Bottle Animation",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Bottle%20animation.html",
+    "preview": "🍾"
   },
   {
     "id": "anim_burger",
     "title": "Burger",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Burger.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Burger.html",
     "preview": "🍔"
+  },
+  {
+    "id": "anim_bus_simulator",
+    "title": "Bus Simulator",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Bus%20simulator.html",
+    "preview": "🚌"
+  },
+  {
+    "id": "anim_buttontest",
+    "title": "Button Test",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Buttontest.html",
+    "preview": "🔘"
+  },
+  {
+    "id": "anim_carbon_cycle",
+    "title": "Carbon Cycle",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Carbon%20cycle.html",
+    "preview": "🌱"
   },
   {
     "id": "anim_charli",
     "title": "Charli",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Charli.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Charli.html",
     "preview": "🕺"
   },
   {
     "id": "anim_chromatography",
     "title": "Chromatography",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Chromatography.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Chromatography.html",
     "preview": "🧪"
   },
   {
     "id": "anim_creepy_button",
     "title": "Creepy Button",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/creepy%20button.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/creepy%20button.html",
     "preview": "👁️"
   },
   {
     "id": "anim_crystallization",
     "title": "Crystallization",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/crystallization.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/crystallization.html",
     "preview": "💎"
   },
   {
     "id": "anim_distillation_setup",
     "title": "Distillation Setup",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Distillation%20setup.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Distillation%20setup.html",
     "preview": "⚗️"
   },
   {
     "id": "anim_evaporation_vs_boiling",
     "title": "Evaporation Vs Boiling",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Evaporation%20Vs%20boiling.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Evaporation%20Vs%20boiling.html",
     "preview": "♨️"
   },
   {
     "id": "anim_flower",
     "title": "Flower",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Flower.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Flower.html",
     "preview": "🌸"
   },
   {
     "id": "anim_fps",
     "title": "Fps",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Fps.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Fps.html",
     "preview": "🎮"
+  },
+  {
+    "id": "anim_google_gemini_type_design",
+    "title": "Google Gemini Type Design",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Google%20gemini%20type%20design.html",
+    "preview": "🤖"
+  },
+  {
+    "id": "anim_google_site_image",
+    "title": "Google Site Image",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Google%20site%20image.html",
+    "preview": "🖼️"
   },
   {
     "id": "anim_icecream",
     "title": "Ice Cream",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Icecream.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Icecream.html",
     "preview": "🍦"
   },
   {
     "id": "anim_jhula_2",
     "title": "Jhula 2.0",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Jhula2.0.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Jhula2.0.html",
     "preview": "🎡"
   },
   {
     "id": "anim_jhula_motion",
     "title": "Jhula Motion",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Jhulamotion.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Jhulamotion.html",
     "preview": "🎢"
   },
   {
     "id": "anim_lamp_design",
     "title": "Lamp Design",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Lamp%20design.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Lamp%20design.html",
     "preview": "💡"
   },
   {
     "id": "anim_linear_motion",
     "title": "Linear Motion",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/linearmotion.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/linearmotion.html",
     "preview": "📐"
+  },
+  {
+    "id": "anim_ludo",
+    "title": "Ludo",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Ludo.html",
+    "preview": "🎲"
   },
   {
     "id": "anim_magnet",
     "title": "Magnet",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Magnet.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Magnet.html",
     "preview": "🧲"
   },
   {
     "id": "anim_magnets_direction",
     "title": "Magnets Direction",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Magnets%20direction.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Magnets%20direction.html",
     "preview": "🧭"
   },
   {
     "id": "anim_mindmap1",
     "title": "Mindmap 1",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Mindmap1.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Mindmap1.html",
     "preview": "🧠"
+  },
+  {
+    "id": "anim_mindmapnew",
+    "title": "Mindmap New",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Mindmapnew.html",
+    "preview": "🗺️"
   },
   {
     "id": "anim_mindmapsolution",
     "title": "Mindmap Solution",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Mindmapsolution.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Mindmapsolution.html",
     "preview": "💡"
   },
   {
     "id": "anim_mixture",
     "title": "Mixture",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Mixture.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Mixture.html",
     "preview": "🥣"
   },
   {
     "id": "anim_mixture_and_solution",
     "title": "Mixture and Solution",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Mixture%20and%20solution.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Mixture%20and%20solution.html",
     "preview": "🧪"
+  },
+  {
+    "id": "anim_patakha2",
+    "title": "Patakha 2",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Patakha2.html",
+    "preview": "🎆"
+  },
+  {
+    "id": "anim_patakhe_wale_game",
+    "title": "Patakhe Wale Game",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/patakhe%20wale%20game.html",
+    "preview": "💥"
+  },
+  {
+    "id": "anim_plazma",
+    "title": "Plazma",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/plazma.html",
+    "preview": "⚡"
+  },
+  {
+    "id": "anim_rotating_border",
+    "title": "Rotating Border",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Rotating%20Border%20.html",
+    "preview": "🔄"
   },
   {
     "id": "anim_rotating_star",
     "title": "Rotating Star",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Rotating_star.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Rotating_star.html",
     "preview": "⭐"
   },
   {
     "id": "anim_sardarji",
     "title": "Sardarji",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Sardarji.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Sardarji.html",
     "preview": "👳"
+  },
+  {
+    "id": "anim_science_simulation",
+    "title": "Science Simulation Class 10",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Science%20simulation%20class%2010....html",
+    "preview": "🔬"
   },
   {
     "id": "anim_solar_system",
     "title": "Solar System",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/solar%20system.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/solar%20system.html",
     "preview": "🪐"
   },
   {
     "id": "anim_solubility",
     "title": "Solubility",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Solubility.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Solubility.html",
     "preview": "💧"
   },
   {
     "id": "anim_sublimation",
     "title": "Sublimation",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Sublimation.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Sublimation.html",
     "preview": "💨"
   },
   {
     "id": "anim_test_card",
     "title": "Test Card",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Test%20card.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Test%20card.html",
     "preview": "🃏"
   },
   {
-    "id": "anim_test_card_bro",
-    "title": "Test Card Bro",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Test%20card%20bro.html",
-    "preview": "🎴"
+    "id": "anim_tilttransition",
+    "title": "Tilt Transition",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Tilttransition.html",
+    "preview": "📐"
   },
   {
     "id": "anim_vaccum_evaporation",
     "title": "Vaccum Evaporation",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/vaccum%20evaporation.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/vaccum%20evaporation.html",
     "preview": "🌫️"
   },
   {
     "id": "anim_vortex",
     "title": "Vortex",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Vortex.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Vortex.html",
     "preview": "🌀"
   },
   {
     "id": "anim_warli",
     "title": "Warli",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Warli.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Warli.html",
     "preview": "🎨"
   },
   {
     "id": "anim_water_cycle",
     "title": "Water Cycle",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Water_cycle.html",
+    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Animation/Water_cycle.html",
     "preview": "🌧️"
-  },
-  {
-    "id": "anim_watercycle",
-    "title": "Watercycle",
-    "source": "https://raw.githack.com/2025akshat-lang/Animation-database/main/Watercycle.html",
-    "preview": "🌊"
   }
 ]
